@@ -1,0 +1,7 @@
+server:
+  port: 8088
+minio:
+  endpoint: http://127.0.0.1:9000
+  bucketName: dev
+  accessKey: 63777887
+  secretKey: Awert159
