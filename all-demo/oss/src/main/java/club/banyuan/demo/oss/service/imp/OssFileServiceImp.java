@@ -1,6 +1,6 @@
-package club.banyuan.demo.service.imp;
+package club.banyuan.demo.oss.service.imp;
 
-import club.banyuan.demo.service.OssFileService;
+import club.banyuan.demo.oss.service.OssFileService;
 import io.minio.ErrorCode;
 import io.minio.MinioClient;
 import io.minio.errors.ErrorResponseException;

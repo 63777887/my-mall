@@ -1,7 +1,7 @@
 package club.banyuan.demo.oss.service.impl;
 
-import club.banyuan.demo.service.OssFileService;
-import club.banyuan.demo.utils.MinioUtil;
+import club.banyuan.demo.oss.service.OssFileService;
+import club.banyuan.demo.oss.utils.MinioUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

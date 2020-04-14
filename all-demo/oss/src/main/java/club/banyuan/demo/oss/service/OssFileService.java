@@ -1,6 +1,4 @@
-package club.banyuan.demo.service;
-
-import org.springframework.stereotype.Service;
+package club.banyuan.demo.oss.service;
 
 import java.io.IOException;
 import java.io.InputStream;
