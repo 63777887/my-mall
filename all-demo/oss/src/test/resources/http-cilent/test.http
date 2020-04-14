@@ -1,4 +1,0 @@
-POST http://localhost:8088/file/image/delete?objectName=1234
-
-###
-

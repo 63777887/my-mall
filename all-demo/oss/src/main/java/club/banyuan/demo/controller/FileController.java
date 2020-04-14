@@ -23,16 +23,16 @@ public class FileController {
 
     @RequestMapping(method = RequestMethod.POST,value = "/image/upload")
     @ResponseBody
-    public String upload(@RequestParam("file")MultipartFile file){
+    public String upload(@RequestParam("file") MultipartFile file){
 
         String filename = file.getOriginalFilename();
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
 
         String objectName = simpleDateFormat.format(new Date())+"/"+filename;
 
         try {
-            return ossFileService.save(objectName, file.getInputStream(), file.getContentType());
+            return ossFileService.save(objectName, file.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -56,7 +56,15 @@ public class FileController {
     @ResponseBody
     public String upload(@RequestParam("objectName") String objectName){
 
+        try {
+        ossFileService.delete(objectName);
         return "success";
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+        return "fail";
+
     }
 
 
