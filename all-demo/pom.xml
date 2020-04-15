@@ -13,7 +13,8 @@
     <modules>
         <module>oss</module>
         <module>redis</module>
-        <module>awt</module>
+        <module>jwt</module>
+        <module>authentication</module>
     </modules>
     <dependencies>
         <dependency>

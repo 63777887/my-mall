@@ -2,7 +2,6 @@ package club.banyuan.demo.redis.service.impl;
 
 import club.banyuan.demo.redis.service.UserService;
 import club.banyuan.demo.redis.user.JacksonUser;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;

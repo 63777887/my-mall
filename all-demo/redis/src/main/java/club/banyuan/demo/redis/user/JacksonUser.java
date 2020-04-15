@@ -5,7 +5,7 @@ import org.springframework.cache.annotation.Cacheable;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class JacksonUser implements Serializable {
+public class JacksonUser {
     private String username;
     private String password;
     private static int count;

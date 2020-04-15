@@ -1,0 +1,5 @@
+server:
+  port: 8088
+token:
+  secretKey: jkfdsnleds
+  expireSec: 3600000
