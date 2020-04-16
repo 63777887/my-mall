@@ -1,6 +1,8 @@
 package club.banyuan.demo.jwt.service;
 
 
+import io.jsonwebtoken.Claims;
+
 import java.util.Map;
 
 public interface TokenService {
@@ -14,6 +16,8 @@ public interface TokenService {
     long getExpireSec(String token);
 
     boolean isExpire(String token);
+
+    boolean validateToken(String token, String username);
 
     String refreshToken(String token);
 

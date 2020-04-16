@@ -97,10 +97,12 @@ public class TokenServiceImpl implements TokenService {
     /**
      * 验证令牌
      *
-     * @param claims       数据声明
+     * @param token,username       token和usename，判断是否是有效令牌
      * @return 是否有效
      */
-    private void validateToken(Claims claims,String username) {
+    @Override
+    public boolean validateToken(String token, String username) {
+        Claims claims = getClaimsFromToken(token);
         if (claims.getExpiration()==null
                 || claims.getExpiration().getTime()<=System.currentTimeMillis()){
             throw new IllegalArgumentException("token过期");
@@ -108,6 +110,7 @@ public class TokenServiceImpl implements TokenService {
 //        else if (username.equals(claims.getSubject())){
 //            throw new IllegalArgumentException("token用户不一致");
 //        }
+        return true;
     }
 
     /**
@@ -119,7 +122,7 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public String refreshToken(String token){
         Claims claims = getClaimsFromToken(token);
-        validateToken(claims,"username");
+        validateToken(token,"username");
         return generateToken(claims);
     }
 

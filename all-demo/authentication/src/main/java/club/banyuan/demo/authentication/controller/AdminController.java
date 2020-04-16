@@ -20,4 +20,10 @@ public class AdminController {
         AdminLoginResp adminLoginResp=adminService.login(adminLoginReq);
         return ResponResult.success(adminLoginResp);
     }
+
+    @RequestMapping(value = "/auth",method = RequestMethod.GET)
+    @ResponseBody
+    public ResponResult auth(){
+        return ResponResult.success("success");
+    }
 }

@@ -5,7 +5,13 @@ Content-Type: application/json
 
 {
   "username": "admin",
-  "password": "banyuan"
+  "password": "b7c2089d-55f5-40b0-953d-db1deee3e9fd"
 }
+
+###
+
+GET  http://localhost:8088/admin/auth
+Content-Type: application/json
+Authorization: BearereyJhbGciOiJIUzUxMifdsJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU4NzAxODY4N30.SQaWMY-JdeWxDInqDmWqkYqbY_Qv50KCrUJQNeSJaOGk9MTUl3vH5EAveU7HZU9VK0Wh6mr0rffxgtOJhcXUVA
 
 ###
