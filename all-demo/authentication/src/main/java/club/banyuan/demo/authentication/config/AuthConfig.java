@@ -1,6 +1,9 @@
 package club.banyuan.demo.authentication.config;
 
-import org.springframework.context.annotation.Bean;
+import club.banyuan.demo.authentication.security.AuthenticationFailHandler;
+import club.banyuan.demo.authentication.security.JwtAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -12,6 +15,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class AuthConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private AutowireCapableBeanFactory autowireCapableBeanFactory;
+
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/admin/login");
@@ -19,16 +26,20 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http.csrf().disable().authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        http.exceptionHandling().authenticationEntryPoint(new AuthenticationFailHandler());
+
+        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter();
+
+        autowireCapableBeanFactory.autowireBean(jwtAuthenticationFilter);
+
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter(){
-        return new JwtAuthenticationFilter();
-    }
 }

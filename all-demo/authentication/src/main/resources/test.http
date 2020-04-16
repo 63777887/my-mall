@@ -12,6 +12,6 @@ Content-Type: application/json
 
 GET  http://localhost:8088/admin/auth
 Content-Type: application/json
-Authorization: BearereyJhbGciOiJIUzUxMifdsJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU4NzAxODY4N30.SQaWMY-JdeWxDInqDmWqkYqbY_Qv50KCrUJQNeSJaOGk9MTUl3vH5EAveU7HZU9VK0Wh6mr0rffxgtOJhcXUVA
+Authorization: BearereyJhbGciOiJIUzUxMiJ9.eyJzdWIfdsiOiJhZG1pbiIsImV4cCI6MTU4NzAzOTIwMn0.2F1QKTXOJhW-H2XkrvzXiDKvjpX5FGy5_-GqN6RMHqgQKIdRYWQAuHywcikS7PP_xmwaaWjlUbYihLF6jCjjzg
 
 ###

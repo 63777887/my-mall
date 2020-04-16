@@ -2,32 +2,29 @@ package club.banyuan.demo.service.impl;
 
 import club.banyuan.demo.jwt.service.TokenService;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.xml.bind.DatatypeConverter;
-
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import static junit.framework.TestCase.assertTrue;
 
-@SpringBootTest
-@RunWith(SpringRunner.class)
+//@SpringBootTest
+//@RunWith(SpringRunner.class)
 public class TokenServiceImplTest {
 //    private TokenService tokenService = new TokenServiceImpl();
     @Autowired
     TokenService tokenService;
 
-    @Before
-    public void initFiled() {
-        ReflectionTestUtils.setField(tokenService, "EXPIRE_SEC", 3600);
-        ReflectionTestUtils.setField(tokenService, "SECRET_KEY", "banyuan");
-    }
+//    @Before
+//    public void initFiled() {
+//        ReflectionTestUtils.setField(tokenService, "EXPIRE_SEC", 3600);
+//        ReflectionTestUtils.setField(tokenService, "SECRET_KEY", "banyuan");
+//    }
 
     @Test
     public void generate() {
@@ -66,5 +63,24 @@ public class TokenServiceImplTest {
         String encoded = DatatypeConverter
                 .printBase64Binary(DatatypeConverter.parseBase64Binary("banyuan"));
         System.out.println(encoded);
+    }
+
+    @Test
+    public void lamda(){
+        List<String> words= Arrays.asList("hello","word");
+        words.stream()
+                .map(w->w.split(""))
+                .forEach(System.out::println);
+        words.sort(String.CASE_INSENSITIVE_ORDER);
+        System.out.println(words);
+
+        words.stream()
+                .flatMap(w -> Arrays.stream(w.split("")))
+//                .filter(s -> s.startsWith("l"))
+                .skip(2)//跳过2个
+                .limit(2)//选择两个
+                .distinct()//去重
+                .sorted()//排序
+                .forEach(System.out::println);
     }
 }

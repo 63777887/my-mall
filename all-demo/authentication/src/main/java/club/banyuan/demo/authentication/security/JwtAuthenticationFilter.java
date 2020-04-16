@@ -1,4 +1,4 @@
-package club.banyuan.demo.authentication.config;
+package club.banyuan.demo.authentication.security;
 
 import club.banyuan.demo.jwt.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -32,21 +31,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         System.out.println(authHead);
         if (authHead!=null && authHead.startsWith(SCHEMA)){
             String token = authHead.substring(SCHEMA.length());
-            try {
-                String  username = tokenService.parseSubject(token);
-                //            if (username!=null &&
+            String username = tokenService.parseSubject(token);
+//            if (username!=null &&
 //                    SecurityContextHolder.getContext().getAuthentication()==null){
 
 //                if (tokenService.validateToken(token,username)){
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                        new UsernamePasswordAuthenticationToken(username,null,null);
-                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                            new UsernamePasswordAuthenticationToken(username,null,null);
+                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 //                }
 //            }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
         }
         filterChain.doFilter(request, response);
     }

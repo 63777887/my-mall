@@ -1,5 +1,7 @@
 package club.banyuan.demo.authentication.common;
 
+import cn.hutool.json.JSONUtil;
+
 public class ResponResult {
 
     /**
@@ -9,35 +11,33 @@ public class ResponResult {
      */
 
     private int code;
-    private boolean isok;
+//    private boolean isok;
     private String message;
     private Object data;
 
-    public ResponResult(int code, boolean isok, String message, Object data) {
+    public ResponResult(int code, String message, Object data) {
         this.code = code;
-        this.isok = isok;
         this.message = message;
         this.data = data;
     }
 
-    public ResponResult(int code, boolean isok, String message) {
-        this.code = code;
-        this.isok = isok;
-        this.message = message;
+    public ResponResult(ResponCode responCode, Object data) {
+        this.code = responCode.getCode();
+        this.message = responCode.getMessage();
+        this.data = data;
     }
+
+    public ResponResult(ResponCode responCode) {
+        this.code = responCode.getCode();
+        this.message = responCode.getMessage();
+    }
+
 
     public ResponResult() {
     }
 
 
 
-    public boolean isIsok() {
-        return isok;
-    }
-
-    public void setIsok(boolean isok) {
-        this.isok = isok;
-    }
 
     public int getCode() {
         return code;
@@ -63,25 +63,23 @@ public class ResponResult {
         this.data = data;
     }
 
-    public static ResponResult error(CustomException e){
-        ResponResult responResult = new ResponResult();
-        responResult.setIsok(false);
-        int code = e.getCode();
-        responResult.setCode(code);
-        if (code==ResponCode.USER_INPUT_ERROR.getCode()){
-            responResult.setMessage(e.getMessage());
-        }else if (code==ResponCode.SYSTEM_ERROR.getCode()){
-            responResult.setMessage(e.getMessage()+" - - 系统异常");
-        }else {
-            responResult.setMessage("系统出现未知异常，请联系管理员");
-        }
-        return responResult;
+    @Override
+    public String toString() {
+        return JSONUtil.toJsonStr(this);
+    }
+
+    public static ResponResult forbidden(){
+        return new ResponResult(ResponCode.FORBIDDEN);
+    }
+
+    public static ResponResult forbidden(String data){
+        return new ResponResult(ResponCode.FORBIDDEN,data);
     }
 
     public static ResponResult success(Object data){
-        return new ResponResult(ResponCode.SUCCESS.getCode(),true,ResponCode.SUCCESS.getMessage(),data);
+        return new ResponResult(ResponCode.SUCCESS,data);
     }
     public static ResponResult success(){
-        return new ResponResult(ResponCode.SUCCESS.getCode(),true,ResponCode.SUCCESS.getMessage());
+        return new ResponResult(ResponCode.SUCCESS);
     }
 }
