@@ -8,6 +8,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.xml.bind.DatatypeConverter;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -71,12 +72,18 @@ public class TokenServiceImplTest {
         words.stream()
                 .map(w->w.split(""))
                 .forEach(System.out::println);
-        words.sort(String.CASE_INSENSITIVE_ORDER);
-        System.out.println(words);
+        words.sort(String.CASE_INSENSITIVE_ORDER);  //大小写不敏感的排序
+
+        words.sort(Comparator.naturalOrder());  //自然排序
+//
+//        words.sort(Comparator.comparing(USER::getName).reversed()   //先按照名字正序
+//                .thenComparingInt(USER::age).reversed());       //然后按照年龄倒序  reversed倒叙对之前所有排序的有效
+//        System.out.println(words);
 
         words.stream()
-                .flatMap(w -> Arrays.stream(w.split("")))
-//                .filter(s -> s.startsWith("l"))
+                .flatMap(w -> Arrays.stream(w.split("")))   //对多重数组惊醒操作
+                .map(w->w+"a")      //对每个成员进行便利操作
+                .filter(s -> s.contains("l"))   //过滤
                 .skip(2)//跳过2个
                 .limit(2)//选择两个
                 .distinct()//去重

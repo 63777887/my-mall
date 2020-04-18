@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//@Component
+@Component
 public class DynamicMetadataSource implements SecurityMetadataSource {
 
     @Autowired
@@ -30,11 +30,10 @@ public class DynamicMetadataSource implements SecurityMetadataSource {
         String path = URLUtil.getPath(url);
         List<UmsResource> allResource = umsResourceService.getAllResource();
         AntPathMatcher antPathMatcher = new AntPathMatcher();
-        antPathMatcher.match("admin/**", path);
 
         //stream流，lambda表达式
         return allResource.stream()
-                .filter(t->{ return antPathMatcher.match(t.getUrl(),path); })
+                .filter(t->antPathMatcher.match(t.getUrl(),path) )
                 .map(ResourceConfigAttribute::new)
                 .collect(Collectors.toList());
     }

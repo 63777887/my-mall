@@ -1,0 +1,39 @@
+POST http://localhost:8088/admin/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "banyuan"
+}
+> {% client.global.set("auth_token", response.body.data.token); %}}
+
+
+###
+
+GET http://localhost:8088/admin/auth
+Content-Type: application/json
+Authorization: Bearer{{auth_token}}
+###
+
+
+POST http://localhost:8088/admin/login
+Content-Type: application/json
+
+{
+  "username": "orderAdmin",
+  "password": "banyuan"
+}
+> {% client.global.set("auth_token", response.body.data.token); %}}
+
+
+###
+GET http://localhost:8088/admin/auth
+Content-Type: application/json
+Authorization: Bearer{{auth_token}}
+
+###
+
+
+
+
+

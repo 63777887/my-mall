@@ -1,9 +1,15 @@
 package club.banyuan.demo.authorization.security;
 
+import club.banyuan.demo.authorization.service.AdminService;
+import club.banyuan.demo.authorization.service.UmsResourceService;
 import club.banyuan.demo.jwt.service.TokenService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -11,14 +17,18 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final String AUTH_KEY = "Authorization";
     private static final String SCHEMA = "Bearer";
+    private static final Logger LOGGER = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+
 
     @Autowired
-    private TokenService tokenService;
+    private AdminService adminService;
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -26,19 +36,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
         String authHead = request.getHeader(AUTH_KEY);
-        System.out.println(authHead);
         if (authHead!=null && authHead.startsWith(SCHEMA)){
-            String token = authHead.substring(SCHEMA.length());
-            String username = tokenService.parseSubject(token);
-//            if (username!=null &&
-//                    SecurityContextHolder.getContext().getAuthentication()==null){
 
-//                if (tokenService.validateToken(token,username)){
-                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                            new UsernamePasswordAuthenticationToken(username,null,null);
-                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-//                }
-//            }
+            String token = authHead.substring(SCHEMA.length());
+            try {
+                UserDetails userDetails = adminService.getUserDetailsByToken(token);
+
+                if (userDetails!=null){
+                    Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
+                    authorities.forEach(System.out::println);
+                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                                new UsernamePasswordAuthenticationToken(userDetails.getUsername() ,userDetails.getPassword()  ,userDetails.getAuthorities());
+                        usernamePasswordAuthenticationToken.setDetails(userDetails);
+                        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                    }
+            } catch (Exception e) {
+                LOGGER.warn("认证异常",e);
+
+            }
         }
         filterChain.doFilter(request, response);
     }

@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface UmsResourceService {
     List<UmsResource> getAllResource();
+    List<UmsResource> getResourcesByAdminId(Long id);
 }
