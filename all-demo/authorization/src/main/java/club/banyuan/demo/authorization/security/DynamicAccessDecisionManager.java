@@ -8,13 +8,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
+
+/**
+ * 用DynamicMetadataSource返回的权限
+ * 动态的权限验证
+ */
 @Component
 public class DynamicAccessDecisionManager implements AccessDecisionManager {
     @Override
@@ -22,10 +24,11 @@ public class DynamicAccessDecisionManager implements AccessDecisionManager {
                        Object object, Collection<ConfigAttribute> configAttributes)
             throws AccessDeniedException, InsufficientAuthenticationException {
 
+        //获取所需要的权限的集合
         Set<String> adminResources = authentication.getAuthorities().stream().
                 map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
 
-
+        //进行验证，符合则返回ture
         boolean isAuthorized=false;
         for (ConfigAttribute c :
                 configAttributes) {
@@ -34,6 +37,7 @@ public class DynamicAccessDecisionManager implements AccessDecisionManager {
                 break;
             }
         }
+        //判断，符合则允许继续，否则跳出
         if (!isAuthorized){
             throw new AccessDeniedException("没有访问权限");
         }

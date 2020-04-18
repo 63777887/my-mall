@@ -1,5 +1,7 @@
 package club.banyuan.demo.authorization.service.impl;
 
+import club.banyuan.demo.authorization.common.ReqFailException;
+import club.banyuan.demo.authorization.common.ResponCode;
 import club.banyuan.demo.authorization.dao.UmsAdminDao;
 import club.banyuan.demo.authorization.dao.entity.UmsAdmin;
 import club.banyuan.demo.authorization.dao.entity.UmsAdminExample;
@@ -53,7 +55,7 @@ public class AdminServiceImpl implements AdminService {
         if (CollUtil.isEmpty(umsAdmins)||
                 !passwordEncoder.matches(adminLoginReq.getPassword(), umsAdmins.get(0).getPassword())){
 
-            throw new RuntimeException("用户名或密码错误");
+            throw new ReqFailException("用户名或密码错误");
         }
 
         adminLoginResp.setToken(tokenService.generateToken(umsAdmins.get(0).getId().toString()));
@@ -73,7 +75,7 @@ public class AdminServiceImpl implements AdminService {
         long adminId = Long.parseLong(tokenService.parseSubject(token));
         UmsAdmin umsAdmin = umsAdminDao.selectByPrimaryKey(adminId);
         if (umsAdmin==null){
-            throw new RuntimeException("用户不存在");
+            throw new ReqFailException("用户不存在");
         }
         List<UmsResource> resources = umsResourceService.getResourcesByAdminId(adminId);
         List<ResourceConfigAttribute> grantedAuthorities=new ArrayList<>();

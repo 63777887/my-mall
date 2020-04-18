@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
+
+//把数据库信息转成security需要的
 public class AdminUserDetails implements UserDetails {
 
     private UmsAdmin umsAdmin;

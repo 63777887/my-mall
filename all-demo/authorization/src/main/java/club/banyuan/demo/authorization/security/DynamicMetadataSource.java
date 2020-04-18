@@ -15,6 +15,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+
 @Component
 public class DynamicMetadataSource implements SecurityMetadataSource {
 
@@ -22,16 +24,29 @@ public class DynamicMetadataSource implements SecurityMetadataSource {
     private UmsResourceService umsResourceService;
 
 
-
+    /**
+     * 返回访问路径所需要的资源列表(字符串)
+     *
+     * @param object
+     * @return
+     * @throws IllegalArgumentException
+     */
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
+
+        //获取当前的路径，filterInvocation与拦截器重的对应
         FilterInvocation invocation = (FilterInvocation) object;
         String url = invocation.getRequestUrl();
         String path = URLUtil.getPath(url);
+
+        //获取所有的资源
         List<UmsResource> allResource = umsResourceService.getAllResource();
+
+        //进行匹配
         AntPathMatcher antPathMatcher = new AntPathMatcher();
 
         //stream流，lambda表达式
+        //返回一个ResourceConfigAttribute的资源集合
         return allResource.stream()
                 .filter(t->antPathMatcher.match(t.getUrl(),path) )
                 .map(ResourceConfigAttribute::new)

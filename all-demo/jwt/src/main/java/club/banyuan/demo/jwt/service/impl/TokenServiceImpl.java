@@ -19,6 +19,8 @@ public class TokenServiceImpl implements TokenService {
     @Value("${token.expireSec}")
     private long EXPIRE_SEC;
 
+    @Value("${token.header}")
+    private String JWT_HEADER_NAME;
 
     /**
      * 生成token令牌,加入过期时间

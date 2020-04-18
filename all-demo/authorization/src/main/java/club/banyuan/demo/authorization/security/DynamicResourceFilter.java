@@ -11,9 +11,11 @@ import javax.servlet.*;
 import java.io.IOException;
 import java.util.logging.LogRecord;
 
-// 查询用户所有资源
-// 查询当前请求路径资源
-// 然后比较路径资源是否在用户资源列表中
+ /**
+ 查询用户所有资源
+ 查询当前请求路径资源
+ 然后比较路径资源是否在用户资源列表中
+  */
 public class DynamicResourceFilter extends AbstractSecurityInterceptor implements Filter {
 
     @Autowired
@@ -26,6 +28,8 @@ public class DynamicResourceFilter extends AbstractSecurityInterceptor implement
             throws IOException, ServletException {
         FilterInvocation filterInvocation = new FilterInvocation(servletRequest,servletResponse,filterChain);
 
+        // //权限查询，通过request，查询到token， token中的用户名查询权限。查询资源列表。
+        // // 鉴权
         //让他执行doFilter，与下面getSecureObjectClass返回值相同，执行doFilter；
         //权限查询，通过request获取token，获取权限，资源列表
         InterceptorStatusToken interceptorStatusToken = super.beforeInvocation(filterInvocation);
@@ -40,11 +44,11 @@ public class DynamicResourceFilter extends AbstractSecurityInterceptor implement
     }
 
     @Autowired
-    @Override
-    public void setAccessDecisionManager(AccessDecisionManager accessDecisionManager) {
-        super.setAccessDecisionManager(accessDecisionManager);
+    public void setAccessDecisionManager(DynamicAccessDecisionManager decisionManager) {
+        super.setAccessDecisionManager(decisionManager);
     }
 
+    //返回值与上面dofilter中的FilterInvocation一致，一致时才会继续执行
     @Override
     public Class<?> getSecureObjectClass() {
         return FilterInvocation.class;

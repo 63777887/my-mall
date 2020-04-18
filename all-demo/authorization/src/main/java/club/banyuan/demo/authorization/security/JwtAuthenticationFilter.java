@@ -19,6 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collection;
 
+/**
+ * 进行权限认证
+ */
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final String AUTH_KEY = "Authorization";
@@ -43,8 +46,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 UserDetails userDetails = adminService.getUserDetailsByToken(token);
 
                 if (userDetails!=null){
-                    Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
-                    authorities.forEach(System.out::println);
+
+                    // token校验通过，设置身份认证信息
+                    // 两个参数构造方法表示身份未认证，三个参数构造方法表示身份已认证
                         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                                 new UsernamePasswordAuthenticationToken(userDetails.getUsername() ,userDetails.getPassword()  ,userDetails.getAuthorities());
                         usernamePasswordAuthenticationToken.setDetails(userDetails);

@@ -4,6 +4,8 @@ import club.banyuan.demo.authorization.dao.entity.UmsResource;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.core.GrantedAuthority;
 
+
+//转换资源格式，换成符合权限验证的格式
 public class ResourceConfigAttribute implements ConfigAttribute , GrantedAuthority {
 
     private UmsResource umsResource;

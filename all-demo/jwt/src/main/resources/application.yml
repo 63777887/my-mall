@@ -3,3 +3,4 @@ server:
 token:
   secretKey: jkfdsnleds
   expireSec: 3600000
+  header: JWTHeaderName
