@@ -1,7 +1,7 @@
-package club.banyuan.demo.redis.service.impl;
+package club.banyuan.zgMallMgt.service.imp;
 
-import club.banyuan.demo.redis.service.UserService;
-import club.banyuan.demo.redis.user.JacksonUser;
+import club.banyuan.zgMallMgt.service.UserService;
+import club.banyuan.zgMallMgt.user.JacksonUser;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;

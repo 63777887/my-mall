@@ -1,6 +1,6 @@
-package club.banyuan.demo.redis.service.impl;
+package club.banyuan.zgMallMgt.service.imp;
 
-import club.banyuan.demo.redis.service.CacheService;
+import club.banyuan.zgMallMgt.service.CacheService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.redis.core.RedisTemplate;
