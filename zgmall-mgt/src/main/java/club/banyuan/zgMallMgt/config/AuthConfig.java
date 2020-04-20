@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,7 +29,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         //白名单
-        web.ignoring().antMatchers("/admin/login");
+        web.ignoring().antMatchers("/admin/login").antMatchers(HttpMethod.OPTIONS,"/**");
     }
 
     @Override
@@ -44,7 +45,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(new JwtForbiddenConfigHandler());
 
 
-        http.exceptionHandling().authenticationEntryPoint(new AuthenticationFailHandler());
+
         http.authorizeRequests().antMatchers("/login").permitAll().anyRequest().authenticated();
 
         // 添加自定义的jwt过滤器

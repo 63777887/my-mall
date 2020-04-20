@@ -1,6 +1,6 @@
 package club.banyuan.zgMallMgt.security;
 
-import club.banyuan.zgMallMgt.common.ResponResult;
+import club.banyuan.zgMallMgt.common.ResponseResult;
 import cn.hutool.json.JSONUtil;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -20,6 +20,6 @@ public class AuthenticationFailHandler implements AuthenticationEntryPoint {
             throws IOException {
         response.setCharacterEncoding("utf-8");
         response.setContentType("application/json");
-        response.getWriter().println(JSONUtil.parse(ResponResult.unauthorized()));
+        response.getWriter().println(JSONUtil.parse(ResponseResult.unauthorized()));
     }
 }

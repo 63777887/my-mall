@@ -1,7 +1,7 @@
 package club.banyuan.zgMallMgt.advice;
 
 import club.banyuan.zgMallMgt.common.ReqFailException;
-import club.banyuan.zgMallMgt.common.ResponResult;
+import club.banyuan.zgMallMgt.common.ResponseResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -20,14 +20,14 @@ public class RequestExceptionHandler {
 //    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponResult runtimeExceptionHandler(MethodArgumentNotValidException ex) {
+    public ResponseResult runtimeExceptionHandler(MethodArgumentNotValidException ex) {
 
-        return ResponResult.badRequest(ex.getMessage());
+        return ResponseResult.badRequest(ex.getMessage());
     }
 
     @ExceptionHandler(ReqFailException.class)
-    public ResponResult LoginFail(ReqFailException ex) {
-        return ResponResult.loginFailed(ex.getMessage());
+    public ResponseResult LoginFail(ReqFailException ex) {
+        return ResponseResult.loginFailed(ex.getMessage());
     }
 
 

@@ -1,6 +1,6 @@
 package club.banyuan.zgMallMgt.common;
 
-public enum  ResponCode {
+public enum ResponseCode {
     SUCCESS(200,"操作成功"),
     BAD_REQUEST(400, "请求失败"),
     UNAUTHORIZED(401, "用户未登陆或token过期"),
@@ -11,7 +11,7 @@ public enum  ResponCode {
     private final int code;
     private final String message;
 
-    ResponCode(int code, String message) {
+    ResponseCode(int code, String message) {
         this.code = code;
         this.message = message;
     }

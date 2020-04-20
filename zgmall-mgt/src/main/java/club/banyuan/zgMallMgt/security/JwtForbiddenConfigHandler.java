@@ -1,6 +1,6 @@
 package club.banyuan.zgMallMgt.security;
 
-import club.banyuan.zgMallMgt.common.ResponResult;
+import club.banyuan.zgMallMgt.common.ResponseResult;
 import cn.hutool.json.JSONUtil;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -15,6 +15,6 @@ public class JwtForbiddenConfigHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException, ServletException {
         httpServletResponse.setCharacterEncoding("utf-8");
         httpServletResponse.setContentType("application/json");
-        httpServletResponse.getWriter().println(JSONUtil.parse(ResponResult.forbidden()));
+        httpServletResponse.getWriter().println(JSONUtil.parse(ResponseResult.forbidden()));
     }
 }
