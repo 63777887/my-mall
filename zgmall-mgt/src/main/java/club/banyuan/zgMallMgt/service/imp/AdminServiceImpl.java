@@ -2,16 +2,19 @@ package club.banyuan.zgMallMgt.service.imp;
 
 import club.banyuan.zgMallMgt.common.ReqFailException;
 import club.banyuan.zgMallMgt.dao.UmsAdminDao;
-import club.banyuan.zgMallMgt.dao.entity.UmsAdmin;
-import club.banyuan.zgMallMgt.dao.entity.UmsAdminExample;
-import club.banyuan.zgMallMgt.dao.entity.UmsResource;
+import club.banyuan.zgMallMgt.dao.UmsMenuDao;
+import club.banyuan.zgMallMgt.dao.UmsRoleDao;
+import club.banyuan.zgMallMgt.dao.entity.*;
+import club.banyuan.zgMallMgt.dto.AdminInfoResp;
 import club.banyuan.zgMallMgt.dto.AdminLoginReq;
 import club.banyuan.zgMallMgt.dto.AdminLoginResp;
+import club.banyuan.zgMallMgt.dto.AdminMenusResp;
 import club.banyuan.zgMallMgt.security.AdminUserDetails;
 import club.banyuan.zgMallMgt.security.ResourceConfigAttribute;
 import club.banyuan.zgMallMgt.service.AdminService;
 import club.banyuan.zgMallMgt.service.TokenService;
 import club.banyuan.zgMallMgt.service.UmsResourceService;
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +24,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -37,6 +41,11 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private UmsResourceService umsResourceService;
+
+    @Autowired
+    private UmsMenuDao umsMenuDao;
+    @Autowired
+    private UmsRoleDao umsRoleDao;
 
     private static final String SCHEMA="Bearer";
     private static final String TOKEN_HEAD_KEY="Authorization";
@@ -82,5 +91,27 @@ public class AdminServiceImpl implements AdminService {
         }
 
         return new AdminUserDetails(umsAdmin,grantedAuthorities);
+    }
+
+    @Override
+    public AdminInfoResp getInfo(long adminId) {
+        UmsAdmin umsAdmin = umsAdminDao.selectByPrimaryKey(adminId);
+        AdminInfoResp adminInfoResp = new AdminInfoResp();
+        adminInfoResp.setIcon(umsAdmin.getIcon());
+        adminInfoResp.setUsername(umsAdmin.getUsername());
+
+        List<UmsRole> umsRoles = umsRoleDao.selectByAdminId(adminId);
+        if (CollUtil.isEmpty(umsRoles)){
+            throw new RuntimeException("角色列表为空");
+        }
+        List<UmsMenu> umsMenus = umsMenuDao.selectByRoleIds(umsRoles.stream().map(UmsRole::getId).collect(Collectors.toList()));
+        adminInfoResp.setMenus(umsMenus.stream().map(t->{
+            AdminMenusResp adminMenusResp = new AdminMenusResp();
+            BeanUtil.copyProperties(t,adminMenusResp);
+            return adminMenusResp;
+        }).collect(Collectors.toList()));
+
+        adminInfoResp.setRoles(umsRoles.stream().map(UmsRole::getName).collect(Collectors.toList()));
+        return adminInfoResp;
     }
 }

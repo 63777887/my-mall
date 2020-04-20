@@ -1,6 +1,5 @@
 package club.banyuan.zgMallMgt.config;
 
-import club.banyuan.zgMallMgt.user.JacksonUser;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -96,9 +95,6 @@ public class RedisConfig extends CachingConfigurerSupport {
         return new RedisCacheManager(redisCacheWriter, redisCacheConfiguration);
     }
 
-    @Bean
-    public JacksonUser jacksonUser(){
-        return new JacksonUser();
-    }
+
 
 }

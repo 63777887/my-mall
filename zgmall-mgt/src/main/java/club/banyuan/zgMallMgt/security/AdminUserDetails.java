@@ -37,7 +37,7 @@ public class AdminUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return umsAdmin.getUsername();
+        return String.valueOf(umsAdmin.getId());
     }
 
     @Override
