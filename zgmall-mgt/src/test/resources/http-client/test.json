@@ -1,18 +1,7 @@
-{
-    "pageNum": 1,
-    "pageSize": 5,
-    "totalPage": 1,
-    "total": 3,
-    "list": [
-      {
-        "id": 1,
-        "name": "商品管理员",
-        "description": "只能查看及操作商品",
-        "adminCount": 0,
-        "createTime": "2020-02-03T08:50:37.000+0000",
-        "status": 1,
-        "sort": 0
-      }
-    ]
 
-}
+    {
+      "id": 1,
+      "createTime": "2020-02-05T02:21:44.000+0000",
+      "name": "商品模块",
+      "sort": 0
+    }

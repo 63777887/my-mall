@@ -99,9 +99,9 @@ public class ResponseResult {
         return new ResponseResult(ResponseCode.FORBIDDEN,data);
     }
 
-    public static <T> ResponseResult setPages(int pageNum, int pageSize, List<T> umsRoleResps){
+    public static <T> ResponseResult setPages(int pageNum, int pageSize, List<T> resultList){
 
-        PageInfo<T> pageInfo = new PageInfo<>(umsRoleResps);
+        PageInfo<T> pageInfo = new PageInfo<>(resultList);
         ResponsePage<T> responsePage = new ResponsePage<>();
         responsePage.setPageNum(pageNum);
         responsePage.setPageSize(pageSize);

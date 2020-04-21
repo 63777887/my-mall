@@ -34,6 +34,22 @@ GET http://localhost:8088/role/list?pageNum=1&pageSize=1
 Content-Type: application/json
 Authorization: Bearer{{auth_token}}
 ###
+GET http://localhost:8088/admin/list?pageNum=1&pageSize=1
+Content-Type: application/json
+Authorization: Bearer{{auth_token}}
+###
+GET http://localhost:8088/menu/list?pageNum=1&pageSize=1
+Content-Type: application/json
+Authorization: Bearer{{auth_token}}
+###
+GET http://localhost:8088/menu/list/0?pageNum=1&pageSize=5
+Content-Type: application/json
+Authorization: Bearer{{auth_token}}
+###
+GET http://localhost:8088/resource/list?pageNum=1&pageSize=5
+Content-Type: application/json
+Authorization: Bearer{{auth_token}}
+###
 
 
 

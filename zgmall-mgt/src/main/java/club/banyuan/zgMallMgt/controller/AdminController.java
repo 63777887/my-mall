@@ -30,4 +30,12 @@ public class AdminController {
 
         return ResponseResult.success(adminService.getInfo(adminId));
     }
+    @ResponseBody
+    @RequestMapping(value = "/list",method = RequestMethod.GET)
+    public ResponseResult list(@RequestParam Integer pageNum,
+                               @RequestParam Integer pageSize,
+                               @RequestParam(required = false) String keyword){
+        return ResponseResult.setPages(pageNum,pageSize,adminService.list(pageNum, pageSize, keyword));
+    }
+
 }

@@ -5,10 +5,7 @@ import club.banyuan.zgMallMgt.dao.UmsAdminDao;
 import club.banyuan.zgMallMgt.dao.UmsMenuDao;
 import club.banyuan.zgMallMgt.dao.UmsRoleDao;
 import club.banyuan.zgMallMgt.dao.entity.*;
-import club.banyuan.zgMallMgt.dto.AdminInfoResp;
-import club.banyuan.zgMallMgt.dto.AdminLoginReq;
-import club.banyuan.zgMallMgt.dto.AdminLoginResp;
-import club.banyuan.zgMallMgt.dto.AdminMenusResp;
+import club.banyuan.zgMallMgt.dto.*;
 import club.banyuan.zgMallMgt.security.AdminUserDetails;
 import club.banyuan.zgMallMgt.security.ResourceConfigAttribute;
 import club.banyuan.zgMallMgt.service.AdminService;
@@ -16,6 +13,8 @@ import club.banyuan.zgMallMgt.service.TokenService;
 import club.banyuan.zgMallMgt.service.UmsResourceService;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -113,5 +112,25 @@ public class AdminServiceImpl implements AdminService {
 
         adminInfoResp.setRoles(umsRoles.stream().map(UmsRole::getName).collect(Collectors.toList()));
         return adminInfoResp;
+    }
+
+    @Override
+    public List<UmsAdminResp> list(Integer pageNum, Integer pageSize, String keyword) {
+
+        PageHelper.startPage(pageNum,pageSize);
+        UmsAdminExample umsAdminExample = new UmsAdminExample();
+        UmsAdminExample.Criteria criteria = umsAdminExample.createCriteria();
+        UmsAdminExample.Criteria criteria1 = umsAdminExample.createCriteria();
+        if (StrUtil.isNotBlank(keyword)){
+            criteria.andNickNameLike(StrUtil.concat(true, "%", keyword, "%"));
+            criteria1.andUsernameLike(StrUtil.concat(true, "%", keyword, "%"));
+        }
+        umsAdminExample.or(criteria1);
+        List<UmsAdmin> umsAdmins = umsAdminDao.selectByExample(umsAdminExample);
+        return umsAdmins.stream().distinct().map(t->{
+            UmsAdminResp umsAdminResp = new UmsAdminResp();
+            BeanUtil.copyProperties(t, umsAdminResp);
+            return umsAdminResp;
+        }).collect(Collectors.toList());
     }
 }
