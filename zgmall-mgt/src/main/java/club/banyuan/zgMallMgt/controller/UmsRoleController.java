@@ -20,4 +20,10 @@ public class UmsRoleController {
                                @RequestParam(required = false) String keyword){
         return ResponseResult.setPages(pageNum,pageSize,umsRoleService.list(pageNum, pageSize, keyword));
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/listAll",method = RequestMethod.GET)
+    public ResponseResult allList(){
+        return ResponseResult.success(umsRoleService.allList());
+    }
 }

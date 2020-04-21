@@ -8,4 +8,5 @@ public interface UmsRoleService {
 
     List<UmsRoleResp> list(Integer pageNum, Integer pageSize, String keyword);
 
+    List<UmsRoleResp> allList();
 }

@@ -31,8 +31,17 @@ public class UmsRoleServiceImpl implements UmsRoleService {
         }
         PageHelper.startPage(pageNum,pageSize);
         List<UmsRole> umsRoles = umsRoleDao.selectByExample(umsRoleExample);
-        return umsRoles.stream().map(t->
-        {
+        return umsRoles.stream().map(t-> {
+            UmsRoleResp umsRoleResp = new UmsRoleResp();
+            BeanUtil.copyProperties(t, umsRoleResp);
+            return umsRoleResp;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UmsRoleResp> allList() {
+        List<UmsRole> umsRoles = umsRoleDao.selectAll();
+        return umsRoles.stream().map(t-> {
             UmsRoleResp umsRoleResp = new UmsRoleResp();
             BeanUtil.copyProperties(t, umsRoleResp);
             return umsRoleResp;
