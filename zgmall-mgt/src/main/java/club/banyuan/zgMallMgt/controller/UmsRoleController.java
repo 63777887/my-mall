@@ -77,5 +77,12 @@ public class UmsRoleController {
         return ResponseResult.success(umsRoleService.allocResource(roleId,resourceIds));
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/updateStatus/{roleId}",method = RequestMethod.POST)
+    public ResponseResult updateStatus(@PathVariable("roleId") Long roleId,
+                                        @RequestParam("status")Integer status){
+        return ResponseResult.success(umsRoleService.updateStatus(roleId,status));
+    }
+
 
 }

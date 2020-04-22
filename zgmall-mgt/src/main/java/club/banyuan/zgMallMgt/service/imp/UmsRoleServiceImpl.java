@@ -119,4 +119,10 @@ public class UmsRoleServiceImpl implements UmsRoleService {
         return resourceIds.size();
     }
 
+    @Override
+    public Integer updateStatus(Long roleId, Integer status) {
+        umsRoleDao.updateStatusByRoleId(roleId,status);
+        return status;
+    }
+
 }

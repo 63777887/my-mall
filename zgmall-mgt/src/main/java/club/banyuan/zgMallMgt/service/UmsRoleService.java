@@ -25,4 +25,6 @@ public interface UmsRoleService {
     Integer allocMenu(Long roleId, List menuIds);
 
     Integer allocResource(Long roleId, List resourceIds);
+
+    Integer updateStatus(Long roleId, Integer status);
 }
