@@ -22,4 +22,12 @@ public class MenuController {
         long adminId = Long.parseLong(principal.getName());
         return ResponseResult.setPages(pageNum,pageSize, umsMenuService.list(adminId,pageNum, pageSize));
     }
+
+
+
+    @ResponseBody
+    @RequestMapping(value = "/treeList",method = RequestMethod.GET)
+    public ResponseResult treeList(){
+        return ResponseResult.success(umsMenuService.treeList());
+    }
 }

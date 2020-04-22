@@ -70,6 +70,9 @@
   <sql id="Base_Column_List">
     id, create_time, `name`, url, description, category_id
   </sql>
+  <sql id="Base_Column_Alias_List">
+    ur.id, ur.create_time, ur.`name`, ur.url, ur.description, ur.category_id
+  </sql>
   <select id="selectByExample" parameterType="club.banyuan.zgMallMgt.dao.entity.UmsResourceExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -100,6 +103,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
+
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="club.banyuan.zgMallMgt.dao.entity.UmsResource" useGeneratedKeys="true">
     insert into ums_resource (create_time, `name`, url, 
       description, category_id)
@@ -143,6 +147,7 @@
       </if>
     </trim>
   </insert>
+
   <select id="countByExample" parameterType="club.banyuan.zgMallMgt.dao.entity.UmsResourceExample" resultType="java.lang.Long">
     select count(*) from ums_resource
     <if test="_parameter != null">
@@ -167,7 +172,16 @@
     WHERE uarr.admin_id = #{id,jdbcType=BIGINT}
     GROUP BY ur.id
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+    <select id="selectResourcesByRoleId" resultMap="BaseResultMap">
+
+      select
+      <include refid="Base_Column_Alias_List"/>
+      from ums_resource ur
+      LEFT JOIN ums_role_resource_relation urrr on ur.id = urrr.resource_id
+      WHERE urrr.role_id=#{roleId}
+
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
     update ums_resource
     <set>
       <if test="record.id != null">

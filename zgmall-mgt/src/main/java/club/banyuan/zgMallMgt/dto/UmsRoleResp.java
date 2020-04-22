@@ -1,5 +1,6 @@
 package club.banyuan.zgMallMgt.dto;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 public class UmsRoleResp {
@@ -18,11 +19,13 @@ public class UmsRoleResp {
     /**
      * 名称
      */
+    @NotBlank(message = "权限名不能为空")
     private String name;
 
     /**
      * 描述
      */
+    @NotBlank(message = "描述不能为空")
     private String description;
 
     /**

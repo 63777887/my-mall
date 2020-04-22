@@ -28,4 +28,11 @@ public class ResourceController {
 
         return ResponseResult.setPages(pageNum, pageSize, umsResourceService.list( pageSize, pageNum,nameKeyword, urlKeyword,categoryId));
     }
+
+    @RequestMapping(value = "/listAll", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseResult listAll() {
+
+        return ResponseResult.success(umsResourceService.getlistAll());
+    }
 }

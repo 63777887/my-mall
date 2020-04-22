@@ -1,6 +1,7 @@
 package club.banyuan.zgMallMgt.service.imp;
 
 import club.banyuan.zgMallMgt.common.ReqFailException;
+import club.banyuan.zgMallMgt.common.ReqFailMessage;
 import club.banyuan.zgMallMgt.dao.UmsAdminDao;
 import club.banyuan.zgMallMgt.dao.UmsMenuDao;
 import club.banyuan.zgMallMgt.dao.UmsRoleDao;
@@ -9,6 +10,7 @@ import club.banyuan.zgMallMgt.dto.*;
 import club.banyuan.zgMallMgt.security.AdminUserDetails;
 import club.banyuan.zgMallMgt.security.ResourceConfigAttribute;
 import club.banyuan.zgMallMgt.service.AdminService;
+import club.banyuan.zgMallMgt.service.CacheKey;
 import club.banyuan.zgMallMgt.service.TokenService;
 import club.banyuan.zgMallMgt.service.UmsResourceService;
 import cn.hutool.core.bean.BeanUtil;
@@ -16,6 +18,8 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,6 +32,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class AdminServiceImpl implements AdminService {
+
 
     @Resource
     private UmsAdminDao umsAdminDao;
@@ -61,7 +66,7 @@ public class AdminServiceImpl implements AdminService {
         if (CollUtil.isEmpty(umsAdmins)||
                 !passwordEncoder.matches(adminLoginReq.getPassword(), umsAdmins.get(0).getPassword())){
 
-            throw new ReqFailException("用户名或密码错误");
+            throw new ReqFailException(ReqFailMessage.LOGIN_FAIL);
         }
 
         adminLoginResp.setToken(tokenService.generateToken(umsAdmins.get(0).getId().toString()));
@@ -81,7 +86,7 @@ public class AdminServiceImpl implements AdminService {
         long adminId = Long.parseLong(tokenService.parseSubject(token));
         UmsAdmin umsAdmin = umsAdminDao.selectByPrimaryKey(adminId);
         if (umsAdmin==null){
-            throw new ReqFailException("用户不存在");
+            throw new ReqFailException(ReqFailMessage.USER_NOT_EXIST);
         }
         List<UmsResource> resources = umsResourceService.getResourcesByAdminId(adminId);
         List<ResourceConfigAttribute> grantedAuthorities=new ArrayList<>();
@@ -92,6 +97,7 @@ public class AdminServiceImpl implements AdminService {
         return new AdminUserDetails(umsAdmin,grantedAuthorities);
     }
 
+    @Cacheable(value = CacheKey.MALL_ADMIN,key = "#adminId")
     @Override
     public AdminInfoResp getInfo(long adminId) {
         UmsAdmin umsAdmin = umsAdminDao.selectByPrimaryKey(adminId);
@@ -101,7 +107,7 @@ public class AdminServiceImpl implements AdminService {
 
         List<UmsRole> umsRoles = umsRoleDao.selectByAdminId(adminId);
         if (CollUtil.isEmpty(umsRoles)){
-            throw new RuntimeException("角色列表为空");
+            throw new ReqFailException(ReqFailMessage.ROLE_IS_NULL);
         }
         List<UmsMenu> umsMenus = umsMenuDao.selectByRoleIds(umsRoles.stream().map(UmsRole::getId).collect(Collectors.toList()));
         adminInfoResp.setMenus(umsMenus.stream().map(t->{
@@ -132,5 +138,10 @@ public class AdminServiceImpl implements AdminService {
             BeanUtil.copyProperties(t, umsAdminResp);
             return umsAdminResp;
         }).collect(Collectors.toList());
+    }
+
+    @CacheEvict(value = CacheKey.MALL_ADMIN,allEntries = true)
+    public void updateMenu(){
+
     }
 }

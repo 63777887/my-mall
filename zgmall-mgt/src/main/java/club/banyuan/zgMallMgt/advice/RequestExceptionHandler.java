@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class RequestExceptionHandler {
 
     //全局异常捕捉处理
-//    @ExceptionHandler(ReqFailException.class)
-//    public ResponResult runtimeExceptionHandler(RuntimeException ex) {
-//
-//        return ResponResult.failed(ex.getMessage());
-//    }
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseResult runtimeExceptionHandler(RuntimeException ex) {
+        return ResponseResult.failed(ex.getMessage());
+    }
 
+    //参数校验异常
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseResult runtimeExceptionHandler(MethodArgumentNotValidException ex) {
+    public ResponseResult ReqFailExceptionHandler(MethodArgumentNotValidException ex) {
 
         return ResponseResult.badRequest(ex.getMessage());
     }
@@ -28,7 +28,6 @@ public class RequestExceptionHandler {
     @ExceptionHandler(ReqFailException.class)
     public ResponseResult LoginFail(ReqFailException ex) {
         return ResponseResult.loginFailed(ex.getMessage());
+
     }
-
-
 }

@@ -5,8 +5,10 @@ import club.banyuan.zgMallMgt.dto.AdminLoginReq;
 import club.banyuan.zgMallMgt.dto.AdminLoginResp;
 import club.banyuan.zgMallMgt.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
 @RestController
@@ -18,17 +20,15 @@ public class AdminController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseResult login(@RequestBody AdminLoginReq adminLoginReq ){
-        AdminLoginResp adminLoginResp=adminService.login(adminLoginReq);
-        return ResponseResult.success(adminLoginResp);
+    public ResponseResult login(@RequestBody @Valid AdminLoginReq adminLoginReq ){
+        return ResponseResult.success(adminService.login(adminLoginReq));
     }
 
     @RequestMapping(value = "/info",method = RequestMethod.GET)
     @ResponseBody
     public ResponseResult auth(Principal principal){
-        long adminId = Long.parseLong(principal.getName());
 
-        return ResponseResult.success(adminService.getInfo(adminId));
+        return ResponseResult.success(adminService.getInfo(Long.parseLong(principal.getName())));
     }
     @ResponseBody
     @RequestMapping(value = "/list",method = RequestMethod.GET)

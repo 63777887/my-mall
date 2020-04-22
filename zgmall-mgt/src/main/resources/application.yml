@@ -13,7 +13,7 @@ spring:
       max-file-size: 10MB #限制文件上传大小为10M
 
   datasource:
-    url: jdbc:mysql://localhost:3306/mall?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/mall?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true&rewriteBatchedStatements=true
     username: root
     password: Awert159
     druid:

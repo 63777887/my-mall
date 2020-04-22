@@ -1,33 +1,5 @@
 {
-  "code": 200,
-  "message": "操作成功",
-  "data": [
-    {
-      "id": 1,
-      "name": "商品管理员",
-      "description": "只能查看及操作商品",
-      "adminCount": 0,
-      "createTime": "2020-02-03T08:50:37.000+0000",
-      "status": 1,
-      "sort": 0
-    },
-    {
-      "id": 2,
-      "name": "订单管理员",
-      "description": "只能查看及操作订单",
-      "adminCount": 0,
-      "createTime": "2018-09-30T07:53:45.000+0000",
-      "status": 1,
-      "sort": 0
-    },
-    {
-      "id": 5,
-      "name": "超级管理员",
-      "description": "拥有所有查看和操作功能",
-      "adminCount": 0,
-      "createTime": "2020-02-02T07:11:05.000+0000",
-      "status": 1,
-      "sort": 0
-    }
-  ]
+  "code": 500,
+  "message": "系统服务异常",
+  "data": "\n### Error updating database.  Cause: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'insert into ums_role_menu_relation (role_id, menu_id)\n    values (8,\n      '8')\n' at line 5\n### The error may involve defaultParameterMap\n### The error occurred while setting parameters\n### SQL: insert into ums_role_menu_relation (role_id, menu_id)     values (?,       ?)      ;      insert into ums_role_menu_relation (role_id, menu_id)     values (?,       ?)      ;      insert into ums_role_menu_relation (role_id, menu_id)     values (?,       ?)      ;      insert into ums_role_menu_relation (role_id, menu_id)     values (?,       ?)      ;      insert into ums_role_menu_relation (role_id, menu_id)     values (?,       ?)\n### Cause: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'insert into ums_role_menu_relation (role_id, menu_id)\n    values (8,\n      '8')\n' at line 5\n; bad SQL grammar []; nested exception is java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'insert into ums_role_menu_relation (role_id, menu_id)\n    values (8,\n      '8')\n' at line 5"
 }

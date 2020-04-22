@@ -14,4 +14,8 @@ public interface UmsResourceService {
 
     List<UmsResourceResp> list(Integer pageSize, Integer pageNum, String nameKeyword, String urlKeyword, Long categoryId);
 
+    List<UmsResourceResp> getlistAll();
+
+
+
 }

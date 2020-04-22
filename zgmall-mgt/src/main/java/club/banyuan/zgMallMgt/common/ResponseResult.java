@@ -1,12 +1,12 @@
 package club.banyuan.zgMallMgt.common;
 
-import club.banyuan.zgMallMgt.dto.UmsRoleResp;
 import cn.hutool.json.JSONUtil;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
 public class ResponseResult {
+
 
     /**
      * code : 200
@@ -74,7 +74,7 @@ public class ResponseResult {
     }
 
     public static ResponseResult loginFailed(Object data) {
-        return new ResponseResult(ResponseCode.LOGIN_FAIL, data);
+        return new ResponseResult(ResponseCode.UNAUTHORIZED, data);
     }
 
     public static ResponseResult unauthorized(Object data) {
@@ -82,7 +82,7 @@ public class ResponseResult {
     }
 
     public static ResponseResult unauthorized() {
-        return new ResponseResult(ResponseCode.UNAUTHORIZED, ResponseCode.UNAUTHORIZED.getMessage());
+        return new ResponseResult(ResponseCode.UNAUTHORIZED,ReqFailMessage.BAD_TOKEN);
     }
 
 

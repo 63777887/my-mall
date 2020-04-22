@@ -59,4 +59,14 @@ public class UmsResourceServiceImpl implements UmsResourceService {
             return umsResourceResp;
         }).collect(Collectors.toList());
     }
+
+    @Override
+    public List<UmsResourceResp> getlistAll() {
+        List<UmsResource> umsResources = umsResourceDao.selectAll();
+        return umsResources.stream().map(t->{
+            UmsResourceResp umsResourceResp = new UmsResourceResp();
+            BeanUtil.copyProperties(t, umsResourceResp);
+            return umsResourceResp;
+        }).collect(Collectors.toList());
+    }
 }

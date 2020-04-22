@@ -31,4 +31,8 @@ public interface UmsResourceDao {
     List<UmsResource> selectAll();
 
     List<UmsResource> selectByAdminId(Long id);
+
+    List<UmsResource> selectResourcesByRoleId(Long roleId);
+
+
 }
