@@ -1,5 +1,9 @@
 package club.banyuan.zgMallMgt.dao.entity;
 
+import com.sun.istack.internal.NotNull;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -18,11 +22,13 @@ public class UmsResource implements Serializable {
     /**
      * 资源名称
      */
+    @NotBlank(message = "资源名称不能为空")
     private String name;
 
     /**
      * 资源URL
      */
+    @NotBlank(message = "资源URL不能为空")
     private String url;
 
     /**

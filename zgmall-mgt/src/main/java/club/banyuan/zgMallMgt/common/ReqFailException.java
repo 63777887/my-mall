@@ -8,6 +8,9 @@ public class ReqFailException extends RuntimeException {
   public ReqFailException(String message) {
     super(message);
   }
+  public ReqFailException(FailReason failReason) {
+    this(failReason.getMessage());
+  }
 
   public ReqFailException(String message, Throwable cause) {
     super(message, cause);

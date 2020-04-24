@@ -1,9 +1,12 @@
 package club.banyuan.zgMallMgt.common;
 
 import cn.hutool.json.JSONUtil;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
+
+import static club.banyuan.zgMallMgt.common.FailReason.UMS_ADMIN_BAD_TOKEN;
 
 public class ResponseResult {
 
@@ -82,7 +85,7 @@ public class ResponseResult {
     }
 
     public static ResponseResult unauthorized() {
-        return new ResponseResult(ResponseCode.UNAUTHORIZED,ReqFailMessage.BAD_TOKEN);
+        return new ResponseResult(ResponseCode.UNAUTHORIZED, UMS_ADMIN_BAD_TOKEN);
     }
 
 
@@ -99,18 +102,6 @@ public class ResponseResult {
         return new ResponseResult(ResponseCode.FORBIDDEN,data);
     }
 
-    public static <T> ResponseResult setPages(int pageNum, int pageSize, List<T> resultList){
-
-        PageInfo<T> pageInfo = new PageInfo<>(resultList);
-        ResponsePage<T> responsePage = new ResponsePage<>();
-        responsePage.setPageNum(pageNum);
-        responsePage.setPageSize(pageSize);
-        responsePage.setList(pageInfo.getList());
-        responsePage.setTotal(pageInfo.getTotal());
-        responsePage.setTotalPage(pageInfo.getPages());
-        return  ResponseResult.success(responsePage);
-
-    }
 
 
 }

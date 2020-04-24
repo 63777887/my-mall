@@ -1,5 +1,9 @@
 package club.banyuan.zgMallMgt.common;
 
+import club.banyuan.zgMallMgt.dto.UmsResourceResp;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
 import java.util.List;
 
 public class ResponsePage<T> {
@@ -60,4 +64,13 @@ public class ResponsePage<T> {
     }
 
 
+    public static <T> ResponsePage setPages(PageInfo<?> pageInfo, List<T> collect) {
+        ResponsePage<T> responsePages = new ResponsePage<>();
+        responsePages.setList(collect);
+        responsePages.setPageNum(pageInfo.getPageNum());
+        responsePages.setPageSize(pageInfo.getPageSize());
+        responsePages.setTotal(pageInfo.getTotal());
+        responsePages.setTotalPage(pageInfo.getPages());
+        return responsePages;
+    }
 }

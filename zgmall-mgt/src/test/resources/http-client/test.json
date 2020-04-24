@@ -1,5 +1,15 @@
 {
-  "code": 500,
-  "message": "系统服务异常",
-  "data": "\n### Error updating database.  Cause: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'insert into ums_role_menu_relation (role_id, menu_id)\n    values (8,\n      '8')\n' at line 5\n### The error may involve defaultParameterMap\n### The error occurred while setting parameters\n### SQL: insert into ums_role_menu_relation (role_id, menu_id)     values (?,       ?)      ;      insert into ums_role_menu_relation (role_id, menu_id)     values (?,       ?)      ;      insert into ums_role_menu_relation (role_id, menu_id)     values (?,       ?)      ;      insert into ums_role_menu_relation (role_id, menu_id)     values (?,       ?)      ;      insert into ums_role_menu_relation (role_id, menu_id)     values (?,       ?)\n### Cause: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'insert into ums_role_menu_relation (role_id, menu_id)\n    values (8,\n      '8')\n' at line 5\n; bad SQL grammar []; nested exception is java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'insert into ums_role_menu_relation (role_id, menu_id)\n    values (8,\n      '8')\n' at line 5"
+  "code": 200,
+  "message": "操作成功",
+  "data": {
+    "id": 7,
+    "parentId": 0,
+    "createTime": "2020-02-02T08:54:07.000+0000",
+    "title": "订单",
+    "level": 0,
+    "sort": 0,
+    "name": "oms",
+    "icon": "order",
+    "hidden": 0
+  }
 }

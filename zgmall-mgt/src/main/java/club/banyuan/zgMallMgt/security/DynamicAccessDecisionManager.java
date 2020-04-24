@@ -14,7 +14,8 @@ import java.util.stream.Collectors;
 
 
 /**
- * 用DynamicMetadataSource返回的权限
+ * 用DynamicMetadataSource返回的所需要的资源列表与用户的权限进行校验
+ * 校验通过后带着DynamicResourceFilter
  * 动态的权限验证
  */
 @Component
@@ -24,7 +25,7 @@ public class DynamicAccessDecisionManager implements AccessDecisionManager {
                        Object object, Collection<ConfigAttribute> configAttributes)
             throws AccessDeniedException, InsufficientAuthenticationException {
 
-        //获取所需要的权限的集合
+        //获取DynamicMetadataSource发送的所需要的权限的集合
         Set<String> adminResources = authentication.getAuthorities().stream().
                 map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
 
@@ -32,6 +33,7 @@ public class DynamicAccessDecisionManager implements AccessDecisionManager {
         boolean isAuthorized=false;
         for (ConfigAttribute c :
                 configAttributes) {
+            //鉴定admin是否具有访问地址所需要的权限
             if (adminResources.contains(c.getAttribute())){
                 isAuthorized=true;
                 break;

@@ -1,15 +1,16 @@
 package club.banyuan.zgMallMgt.controller;
 
+import club.banyuan.zgMallMgt.common.ResponsePage;
 import club.banyuan.zgMallMgt.common.ResponseResult;
+import club.banyuan.zgMallMgt.dao.entity.UmsAdmin;
 import club.banyuan.zgMallMgt.dto.AdminLoginReq;
-import club.banyuan.zgMallMgt.dto.AdminLoginResp;
 import club.banyuan.zgMallMgt.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
@@ -32,10 +33,42 @@ public class AdminController {
     }
     @ResponseBody
     @RequestMapping(value = "/list",method = RequestMethod.GET)
-    public ResponseResult list(@RequestParam Integer pageNum,
-                               @RequestParam Integer pageSize,
-                               @RequestParam(required = false) String keyword){
-        return ResponseResult.setPages(pageNum,pageSize,adminService.list(pageNum, pageSize, keyword));
+    public ResponseResult list(@RequestParam("pageNum") Integer pageNum,
+                               @RequestParam("pageSize") Integer pageSize,
+                               @RequestParam(required = false,value = "keyword") String keyword){
+        return ResponseResult.success(adminService.list(pageNum,pageSize,keyword));
+
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/role/{adminId}",method = RequestMethod.GET)
+    public ResponseResult role(@PathVariable("adminId") Long adminId){
+        return ResponseResult.success(adminService.getRoleByAdminId(adminId));
+    }
+
+    @RequestMapping(value = "role/update", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseResult updateRole(@RequestParam("adminId") Long adminId,
+                                     @RequestParam("roleIds") List<Long> roleIds){
+        return ResponseResult.success(adminService.updateRole(adminId,roleIds));
+    }
+
+    @RequestMapping(value = "/update/{adminId}", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseResult update(@RequestBody UmsAdmin admin ,
+                                 @PathVariable("adminId") Long adminId){
+        return ResponseResult.success(adminService.update(admin,adminId));
+    }
+
+    @RequestMapping(value = "/delete/{adminId}", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseResult delete(@PathVariable("adminId") Long adminId){
+        return ResponseResult.success(adminService.delete(adminId));
+    }
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseResult register(@RequestBody UmsAdmin admin){
+        return ResponseResult.success(adminService.register(admin));
+    }
 }

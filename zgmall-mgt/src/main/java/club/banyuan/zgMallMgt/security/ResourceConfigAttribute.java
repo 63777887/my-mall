@@ -5,7 +5,7 @@ import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.core.GrantedAuthority;
 
 
-//转换资源格式，换成符合权限验证的格式
+//封装资源，转换资源格式，换成符合权限验证的格式
 public class ResourceConfigAttribute implements ConfigAttribute , GrantedAuthority {
 
     private UmsResource umsResource;
@@ -13,6 +13,7 @@ public class ResourceConfigAttribute implements ConfigAttribute , GrantedAuthori
     public ResourceConfigAttribute(UmsResource umsResource) {
         this.umsResource = umsResource;
     }
+
 
     @Override
     public String getAttribute() {

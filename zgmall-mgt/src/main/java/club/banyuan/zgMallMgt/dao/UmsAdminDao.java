@@ -28,4 +28,6 @@ public interface UmsAdminDao {
     int updateByPrimaryKeySelective(UmsAdmin record);
 
     int updateByPrimaryKey(UmsAdmin record);
+
+    List<UmsAdmin> selectAll();
 }

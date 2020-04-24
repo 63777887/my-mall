@@ -34,17 +34,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException {
+        //首先从这里开始，获取token
         String authHead = request.getHeader(AUTH_KEY);
         if (authHead!=null && authHead.startsWith(SCHEMA)){
 
             String token = authHead.substring(SCHEMA.length());
             try {
+                //获取userDetails用户信息
                 UserDetails userDetails = adminService.getUserDetailsByToken(token);
 
                 if (userDetails!=null){
 
                     // token校验通过，设置身份认证信息
                     // 两个参数构造方法表示身份未认证，三个参数构造方法表示身份已认证
+                    //usernamePasswordAuthenticationToken把getUserDetailsByToken获得的带有认证鉴权信息的userDetails交给security
                         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                                 new UsernamePasswordAuthenticationToken(userDetails.getUsername() ,userDetails.getPassword()  ,userDetails.getAuthorities());
                         usernamePasswordAuthenticationToken.setDetails(userDetails);

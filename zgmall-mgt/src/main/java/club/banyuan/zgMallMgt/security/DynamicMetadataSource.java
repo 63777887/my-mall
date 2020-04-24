@@ -32,7 +32,7 @@ public class DynamicMetadataSource implements SecurityMetadataSource {
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
 
-        //获取当前的路径，filterInvocation与拦截器重的对应
+        //获取当前请求的路径，filterInvocation与拦截器重的对应
         FilterInvocation invocation = (FilterInvocation) object;
         String url = invocation.getRequestUrl();
         String path = URLUtil.getPath(url);
@@ -44,7 +44,7 @@ public class DynamicMetadataSource implements SecurityMetadataSource {
         AntPathMatcher antPathMatcher = new AntPathMatcher();
 
         //stream流，lambda表达式
-        //返回一个ResourceConfigAttribute的资源集合
+        //返回一个ResourceConfigAttribute的资源集合，发给DynamicAccessDecisionManager
         return allResource.stream()
                 .filter(t->antPathMatcher.match(t.getUrl(),path) )
                 .map(ResourceConfigAttribute::new)

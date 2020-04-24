@@ -1,5 +1,7 @@
 package club.banyuan.zgMallMgt.service.imp;
 
+import club.banyuan.zgMallMgt.common.ReqFailException;
+import club.banyuan.zgMallMgt.common.ResponsePage;
 import club.banyuan.zgMallMgt.dao.UmsMenuDao;
 import club.banyuan.zgMallMgt.dao.UmsResourceDao;
 import club.banyuan.zgMallMgt.dao.UmsRoleDao;
@@ -14,8 +16,10 @@ import club.banyuan.zgMallMgt.service.UmsRoleService;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
@@ -23,6 +27,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static club.banyuan.zgMallMgt.common.FailReason.*;
 
 @Service
 public class UmsRoleServiceImpl implements UmsRoleService {
@@ -35,21 +41,21 @@ public class UmsRoleServiceImpl implements UmsRoleService {
     private UmsMenuDao umsMenuDao;
 
     @Override
-    public List<UmsRoleResp> showList(Integer pageNum, Integer pageSize, String keyword) {
-
+    public ResponsePage showList(Integer pageNum, Integer pageSize, String keyword) {
+        PageHelper.startPage(pageNum,pageSize);
         UmsRoleExample umsRoleExample = new UmsRoleExample();
         if (keyword != null) {
             UmsRoleExample.Criteria criteria = umsRoleExample.createCriteria();
             criteria.andNameLike(StrUtil.concat(true, "%",keyword,"%"));
-
         }
-        PageHelper.startPage(pageNum,pageSize);
         List<UmsRole> umsRoles = umsRoleDao.selectByExample(umsRoleExample);
-        return umsRoles.stream().map(t-> {
+        PageInfo<UmsRole> pageInfo = new PageInfo<>(umsRoles);
+        List<UmsRoleResp> collect = umsRoles.stream().map(t -> {
             UmsRoleResp umsRoleResp = new UmsRoleResp();
             BeanUtil.copyProperties(t, umsRoleResp);
             return umsRoleResp;
         }).collect(Collectors.toList());
+        return ResponsePage.setPages(pageInfo, collect);
     }
 
     @Override
@@ -64,28 +70,48 @@ public class UmsRoleServiceImpl implements UmsRoleService {
 
     @Override
     public Long createUmsRole(@RequestBody @Valid UmsRoleResp umsRoleResp) {
+        UmsRoleExample umsRoleExample = new UmsRoleExample();
+        umsRoleExample.createCriteria().andNameEqualTo(umsRoleResp.getName());
+
+        if (umsRoleDao.countByExample(umsRoleExample) > 0) {
+            throw new ReqFailException(UMS_ROLE_NAME_DUPLICATE);
+        }
         UmsRole umsRole = new UmsRole();
         BeanUtil.copyProperties(umsRoleResp, umsRole);
         umsRole.setCreateTime(new Date());
         umsRole.setSort(0);
-       return (long)umsRoleDao.insertSelective(umsRole);
+       return umsRole.getId();
     }
 
     @Override
     public Long deleteUmsRoleById(Long ids) {
-        return (long)umsRoleDao.deleteByPrimaryKey(ids);
+        if (umsRoleDao.deleteByPrimaryKey(ids) <= 0) {
+            throw new ReqFailException(UMS_ADMIN_ROLE_NOT_EXIST);
+        }
+        return ids;
     }
 
     @Override
     public Long updateUmsRole(UmsRoleResp umsRoleResp, Long roleId) {
+        UmsRoleExample umsRoleExample = new UmsRoleExample();
+        umsRoleExample.createCriteria().andNameEqualTo(umsRoleResp.getName())
+                .andIdNotEqualTo(umsRoleResp.getId());
+        if (umsRoleDao.countByExample(umsRoleExample) > 0) {
+            throw new ReqFailException(UMS_ROLE_NAME_DUPLICATE);
+        }
         UmsRole umsRole = new UmsRole();
         umsRole.setId(roleId);
         BeanUtil.copyProperties(umsRoleResp, umsRole);
-        return (long)umsRoleDao.updateByPrimaryKeySelective(umsRole);
+        return roleId;
     }
 
     @Override
     public List<UmsResourceResp> showListResource(Long roleId) {
+        UmsRoleExample umsRoleExample = new UmsRoleExample();
+        umsRoleExample.createCriteria().andIdEqualTo(roleId);
+        if (umsRoleDao.countByExample(umsRoleExample) <= 0) {
+            throw new ReqFailException(UMS_ADMIN_ROLE_NOT_EXIST);
+        }
         List<UmsResource> umsResources = umsResourceDao.selectResourcesByRoleId(roleId);
         return umsResources.stream().map(t->{
             UmsResourceResp umsResourceResp = new UmsResourceResp();
@@ -96,8 +122,12 @@ public class UmsRoleServiceImpl implements UmsRoleService {
 
     @Override
     public List<UmsMenuResp> listMenu(Long roleId) {
+        UmsRoleExample umsRoleExample = new UmsRoleExample();
+        umsRoleExample.createCriteria().andIdEqualTo(roleId);
+        if (umsRoleDao.countByExample(umsRoleExample) <= 0) {
+            throw new ReqFailException(UMS_ADMIN_ROLE_NOT_EXIST);
+        }
         List<UmsMenu> umsMenus = umsMenuDao.selectByRoleIds(Collections.singletonList(roleId));
-
         return umsMenus.stream().map(t->{
             UmsMenuResp umsMenuResp = new UmsMenuResp();
             BeanUtil.copyProperties(t, umsMenuResp);
@@ -105,8 +135,17 @@ public class UmsRoleServiceImpl implements UmsRoleService {
         }).collect(Collectors.toList());
     }
 
+    @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public Integer allocMenu(Long roleId, List menuIds) {
+        UmsRoleExample umsRoleExample = new UmsRoleExample();
+        umsRoleExample.createCriteria().andIdEqualTo(roleId);
+        if (umsRoleDao.countByExample(umsRoleExample) <= 0) {
+            throw new ReqFailException(UMS_ADMIN_ROLE_NOT_EXIST);
+        }
+        if (!umsMenuDao.selectAll().containsAll(menuIds)){
+            throw new ReqFailException(UMS_ROLE_MENU_REL_ILLEGAL);
+        }
         umsRoleDao.deleteRoleMenuRelationByRoleId(roleId);
         umsRoleDao.updateRoleMenuRelationByRoleId(roleId,menuIds);
         return menuIds.size();
@@ -114,6 +153,14 @@ public class UmsRoleServiceImpl implements UmsRoleService {
 
     @Override
     public Integer allocResource(Long roleId, List resourceIds) {
+        UmsRoleExample umsRoleExample = new UmsRoleExample();
+        umsRoleExample.createCriteria().andIdEqualTo(roleId);
+        if (umsRoleDao.countByExample(umsRoleExample) <= 0) {
+            throw new ReqFailException(UMS_ADMIN_ROLE_NOT_EXIST);
+        }
+        if (!umsResourceDao.selectAll().containsAll(resourceIds)){
+            throw new ReqFailException(UMS_ROLE_MENU_REL_ILLEGAL);
+        }
         umsRoleDao.deleteRoleResourceRelationByRoleId(roleId);
         umsRoleDao.insertRoleResourceRelationByRoleId(roleId,resourceIds);
         return resourceIds.size();
@@ -121,6 +168,11 @@ public class UmsRoleServiceImpl implements UmsRoleService {
 
     @Override
     public Integer updateStatus(Long roleId, Integer status) {
+        UmsRoleExample umsRoleExample = new UmsRoleExample();
+        umsRoleExample.createCriteria().andIdEqualTo(roleId);
+        if (umsRoleDao.countByExample(umsRoleExample) <= 0) {
+            throw new ReqFailException(UMS_ADMIN_ROLE_NOT_EXIST);
+        }
         umsRoleDao.updateStatusByRoleId(roleId,status);
         return status;
     }

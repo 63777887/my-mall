@@ -182,7 +182,12 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+    <select id="selectAll" resultType="club.banyuan.zgMallMgt.dao.entity.UmsAdmin">
+      select
+      <include refid="Base_Column_List" />
+      from ums_admin
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
     update ums_admin
     <set>
       <if test="record.id != null">

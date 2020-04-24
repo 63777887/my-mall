@@ -1,5 +1,6 @@
 package club.banyuan.zgMallMgt.controller;
 
+import club.banyuan.zgMallMgt.common.ResponsePage;
 import club.banyuan.zgMallMgt.common.ResponseResult;
 import club.banyuan.zgMallMgt.dto.UmsRoleResp;
 import club.banyuan.zgMallMgt.service.UmsMenuService;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
@@ -25,7 +27,7 @@ public class UmsRoleController {
     public ResponseResult list(@RequestParam Integer pageNum,
                                @RequestParam Integer pageSize,
                                @RequestParam(required = false) String keyword){
-        return ResponseResult.setPages(pageNum,pageSize,umsRoleService.showList(pageNum, pageSize, keyword));
+        return ResponseResult.success(umsRoleService.showList(pageNum,pageSize,keyword));
     }
 
     @ResponseBody
@@ -42,7 +44,7 @@ public class UmsRoleController {
 
     @ResponseBody
     @RequestMapping(value = "/delete",method = RequestMethod.POST)
-    public ResponseResult delete(@RequestParam Long ids){
+    public ResponseResult delete(@RequestParam @NotNull Long ids){
         return ResponseResult.success(umsRoleService.deleteUmsRoleById(ids));
     }
 

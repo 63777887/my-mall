@@ -1,5 +1,6 @@
 package club.banyuan.zgMallMgt.dao.entity;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -8,10 +9,12 @@ import java.util.Date;
  * @author 
  */
 public class UmsAdmin implements Serializable {
+
     private Long id;
 
+    @NotBlank(message = "用户名不能为空")
     private String username;
-
+    @NotBlank(message = "密码不能为空")
     private String password;
 
     /**
@@ -22,11 +25,13 @@ public class UmsAdmin implements Serializable {
     /**
      * 邮箱
      */
+    @NotBlank(message = "邮箱不能为空")
     private String email;
 
     /**
      * 昵称
      */
+    @NotBlank(message = "姓名不能为空")
     private String nickName;
 
     /**

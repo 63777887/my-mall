@@ -1,5 +1,6 @@
 package club.banyuan.zgMallMgt.service;
 
+import club.banyuan.zgMallMgt.common.ResponsePage;
 import club.banyuan.zgMallMgt.dto.UmsMenuResp;
 import club.banyuan.zgMallMgt.dto.UmsResourceResp;
 import club.banyuan.zgMallMgt.dto.UmsRoleResp;
@@ -8,7 +9,7 @@ import java.util.List;
 
 public interface UmsRoleService {
 
-    List<UmsRoleResp> showList(Integer pageNum, Integer pageSize, String keyword);
+    ResponsePage showList(Integer pageNum, Integer pageSize, String keyword);
 
     List<UmsRoleResp> showAllList();
 
