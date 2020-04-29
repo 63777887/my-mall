@@ -10,19 +10,17 @@ import club.banyuan.zgMallMgt.dto.PmsProductResp;
 import club.banyuan.zgMallMgt.service.OssFileService;
 import club.banyuan.zgMallMgt.service.PmsProductService;
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,7 +53,7 @@ public class PmsProductServiceImpl implements PmsProductService {
 
 
     @Override
-    public ResponsePage list(Integer pageNum, Integer pageSize, String keyword, String productSn, Long productCategoryId, Long brandId) {
+    public ResponsePage list(Integer pageNum, Integer pageSize, String keyword, Integer publishStatus, Integer verifyStatus, String productSn, Long productCategoryId, Long brandId) {
         PageHelper.startPage(pageNum, pageSize);
         PmsProductExample pmsProductExample = new PmsProductExample();
         PmsProductExample.Criteria criteria = pmsProductExample.createCriteria();
@@ -64,6 +62,12 @@ public class PmsProductServiceImpl implements PmsProductService {
         }
         if (StrUtil.isNotBlank(productSn)) {
             criteria.andProductSnEqualTo(StrUtil.concat(true, "%", productSn, "%"));
+        }
+        if (publishStatus!=null) {
+            criteria.andPublishStatusEqualTo(publishStatus);
+        }
+        if (verifyStatus!=null) {
+            criteria.andVerifyStatusEqualTo(verifyStatus);
         }
         if (productCategoryId != null) {
             criteria.andProductCategoryIdEqualTo(productCategoryId);

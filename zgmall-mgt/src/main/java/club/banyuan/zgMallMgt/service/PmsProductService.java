@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface PmsProductService {
-    ResponsePage list(Integer pageNum, Integer pageSize, String keyword, String productSn, Long productCategoryId, Long brandId);
+    ResponsePage list(Integer pageNum, Integer pageSize, String keyword, Integer publishStatus, Integer verifyStatus, String productSn, Long productCategoryId, Long brandId);
 
     Integer create(CreateProductReq createProductReq);
 
