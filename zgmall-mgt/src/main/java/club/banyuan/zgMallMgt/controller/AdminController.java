@@ -59,6 +59,12 @@ public class AdminController {
                                  @PathVariable("adminId") Long adminId){
         return ResponseResult.success(adminService.update(admin,adminId));
     }
+    @RequestMapping(value = "/updateStatus/{adminId}", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseResult updateStatus(@RequestParam("status") Integer status ,
+                                 @PathVariable("adminId") Long adminId){
+        return ResponseResult.success(adminService.updateStatus(status,adminId));
+    }
 
     @RequestMapping(value = "/delete/{adminId}", method = RequestMethod.POST)
     @ResponseBody

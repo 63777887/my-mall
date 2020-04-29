@@ -22,4 +22,6 @@ public interface UmsMenuService {
     long create(UmsMenu umsMenu);
 
     Integer delete(Long menuId);
+
+    Integer updateHidden(Long menuId, Integer hidden);
 }

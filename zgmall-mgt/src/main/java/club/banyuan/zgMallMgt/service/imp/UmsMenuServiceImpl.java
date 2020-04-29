@@ -88,6 +88,12 @@ public class UmsMenuServiceImpl implements UmsMenuService {
         if (ObjectUtil.isEmpty(menu)){
             throw new ReqFailException(UMS_ROLE_MENU_REL_ILLEGAL);
         }
+        List<UmsMenu> umsMenus = umsMenuDao.selectAll();
+        umsMenus.forEach(t->{
+            if (t.getTitle().equals(umsMenu.getTitle()) || t.getName().equals(umsMenu.getName())){
+                throw new ReqFailException(UMS_ROLE_MENU_DUPLICATE);
+            }
+        });
         umsMenu.setId(id);
         return umsMenuDao.updateByPrimaryKey(umsMenu);
 
@@ -119,6 +125,15 @@ public class UmsMenuServiceImpl implements UmsMenuService {
         }
         return umsMenuDao.deleteByPrimaryKey(menuId);
 
+    }
+
+    @Override
+    public Integer updateHidden(Long menuId, Integer hidden) {
+        UmsMenu menu = umsMenuDao.selectByPrimaryKey(menuId);
+        if (ObjectUtil.isEmpty(menu)){
+            throw new ReqFailException(UMS_ADMIN_MENU_NOT_EXIST);
+        }
+        return umsMenuDao.updateHiddenByMenuId(menuId,hidden);
     }
 
 

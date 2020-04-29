@@ -1,5 +1,7 @@
 package club.banyuan.zgMallMgt.controller;
 
+import club.banyuan.zgMallMgt.common.ReqFailException;
+import club.banyuan.zgMallMgt.common.ResponseResult;
 import club.banyuan.zgMallMgt.service.OssFileService;
 import club.banyuan.zgMallMgt.utils.MinioUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +12,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static club.banyuan.zgMallMgt.common.FailReason.OSS_UPLOAD_FAIL;
 
 @RestController
 @RequestMapping("/file")
@@ -20,22 +25,23 @@ public class FileController {
     @Autowired
     private OssFileService ossFileService;
 
+
     @RequestMapping(method = RequestMethod.POST,value = "/image/upload")
     @ResponseBody
-    public String upload(@RequestParam("file") MultipartFile file){
-
+    public ResponseResult upload(@RequestParam("file") MultipartFile file, Principal principal){
+        String subject = principal.getName();
         String filename = file.getOriginalFilename();
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
 
-        String objectName = simpleDateFormat.format(new Date())+"/"+filename;
+        String objectName = simpleDateFormat.format(new Date())+"/"+subject+"/"+filename;
 
         try {
-            return ossFileService.save(objectName, file.getInputStream());
+            return ResponseResult.success(ossFileService.save(objectName, file.getInputStream()));
         } catch (IOException e) {
             e.printStackTrace();
+            throw new ReqFailException(OSS_UPLOAD_FAIL);
         }
-        return "fail";
     }
 
     @RequestMapping(value = "/image/download",method = RequestMethod.GET)

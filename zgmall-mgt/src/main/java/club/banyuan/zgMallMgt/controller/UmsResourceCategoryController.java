@@ -10,7 +10,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/resourceCategory")
-public class ResourceCategoryController {
+public class UmsResourceCategoryController {
 
     @Autowired
     private UmsResourceCategoryService umsResourceCategoryService;

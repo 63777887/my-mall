@@ -1,27 +1,30 @@
 package club.banyuan.zgMallMgt.service.impl;
 
+import club.banyuan.zgMallMgt.dao.PmsProductCategoryAttributeRelationDao;
 import club.banyuan.zgMallMgt.dao.PmsProductDao;
 import club.banyuan.zgMallMgt.dao.entity.PmsProduct;
-import club.banyuan.zgMallMgt.dto.AdminInfoResp;
 import club.banyuan.zgMallMgt.dto.AdminLoginReq;
 import club.banyuan.zgMallMgt.dto.AdminLoginResp;
+import club.banyuan.zgMallMgt.dto.AttrInfoResp;
 import club.banyuan.zgMallMgt.service.AdminService;
 import club.banyuan.zgMallMgt.service.TokenService;
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class UmsAdminServiceImplTest {
+public class PmsProductTest {
 
   @Autowired
   private AdminService adminService;
@@ -31,6 +34,8 @@ public class UmsAdminServiceImplTest {
   @Autowired
   PmsProductDao pmsProductDao;
 
+  @Autowired
+  PmsProductCategoryAttributeRelationDao pmsProductCategoryAttributeRelationDao;
 
   @Test
   public void loginTest() {
@@ -48,11 +53,14 @@ public class UmsAdminServiceImplTest {
 
   @Test
   public void infoTest(){
-//    AdminInfoResp info = adminService.getInfo(3);
-//    Assert.assertTrue(CollUtil.isNotEmpty(info.getMenus()));
-//    Assert.assertTrue(CollUtil.isNotEmpty(info.getRoles()));
-    PmsProduct pmsProduct = pmsProductDao.selectByPrimaryKey(90L);
-//    System.out.println(pmsProductDao.deleteByPrimaryKey(90L));
-    System.out.println(ObjectUtil.isEmpty(pmsProduct));
+
+    List<AttrInfoResp> attrInfoResps = pmsProductCategoryAttributeRelationDao.selectByProductCategoryId(1L);
+    System.out.println(Arrays.toString(attrInfoResps.toArray()));
+  }
+  @Test
+  public void test03(){
+    String i= "sll";
+    String m=null;
+    System.out.println(i.equals(m));
   }
 }

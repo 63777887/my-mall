@@ -287,4 +287,10 @@
       `status` = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
+    <update id="updateStatusByAdminId">
+       update ums_admin
+    set
+      `status` = #{status,jdbcType=INTEGER}
+    where id = #{adminId,jdbcType=BIGINT}
+    </update>
 </mapper>

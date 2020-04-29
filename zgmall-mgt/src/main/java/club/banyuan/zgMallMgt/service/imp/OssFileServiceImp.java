@@ -1,5 +1,6 @@
 package club.banyuan.zgMallMgt.service.imp;
 
+import club.banyuan.zgMallMgt.dto.OssFileResp;
 import club.banyuan.zgMallMgt.service.OssFileService;
 import io.minio.ErrorCode;
 import io.minio.MinioClient;
@@ -30,7 +31,7 @@ public class OssFileServiceImp implements OssFileService {
 
 
     @Override
-    public String save(String objectName, InputStream stream) throws IOException {
+    public OssFileResp save(String objectName, InputStream stream) throws IOException {
         try {
             MinioClient minioClient = new MinioClient(ENDPOINT, ACCESS_KEY, SECRET_KEY);
             if (!minioClient.bucketExists(BUCKET_NAME)) {
@@ -39,8 +40,12 @@ public class OssFileServiceImp implements OssFileService {
             }
 
             minioClient.putObject(BUCKET_NAME, objectName, stream, null);
-
-            return ENDPOINT+"/"+BUCKET_NAME+"/"+objectName;
+            String objectUrl = minioClient.getObjectUrl(BUCKET_NAME, objectName);
+            OssFileResp ossFileResp = new OssFileResp();
+            String[] split = objectName.split("/");
+            ossFileResp.setName(objectName.substring(split[0].length()+1));
+            ossFileResp.setUrl(objectUrl);
+            return ossFileResp;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,10 +83,15 @@ public class OssFileServiceImp implements OssFileService {
     }
 
     @Override
-    public void delete(String objectName) throws IOException {
+    public void delete(String url) throws IOException {
         try {
+            //http://127.0.0.1:9000/dev/20200429/haiyang1.jpg
+            int length=ENDPOINT.length()+1+BUCKET_NAME.length()+1;
+            String objectName = url.substring(length);
             MinioClient minioClient = new MinioClient(ENDPOINT, ACCESS_KEY, SECRET_KEY);
-            minioClient.removeObject(BUCKET_NAME, objectName);
+            if (isExist(objectName)) {
+                minioClient.removeObject(BUCKET_NAME, objectName);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             throw new IOException();

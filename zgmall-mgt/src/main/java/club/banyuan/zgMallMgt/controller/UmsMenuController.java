@@ -11,7 +11,7 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping("/menu")
-public class MenuController {
+public class UmsMenuController {
 
     @Autowired
     private UmsMenuService umsMenuService;
@@ -58,5 +58,11 @@ public class MenuController {
     @RequestMapping(value = "delete/{menuId}",method = RequestMethod.POST)
     public ResponseResult delete(@PathVariable Long menuId){
         return ResponseResult.success(umsMenuService.delete(menuId));
+    }
+    @ResponseBody
+    @RequestMapping(value = "updateHidden/{menuId}",method = RequestMethod.POST)
+    public ResponseResult updateHidden(@PathVariable Long menuId,
+                                       @RequestParam("hidden") Integer hidden){
+        return ResponseResult.success(umsMenuService.updateHidden(menuId,hidden));
     }
 }

@@ -28,4 +28,6 @@ public interface AdminService {
     Long delete(Long adminId);
 
     UmsAdminResp register(UmsAdmin admin);
+
+    Integer updateStatus(Integer status, Long adminId);
 }

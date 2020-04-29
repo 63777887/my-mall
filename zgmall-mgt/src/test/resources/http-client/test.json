@@ -1,15 +1,15 @@
-{
-  "code": 200,
-  "message": "操作成功",
-  "data": {
-    "id": 7,
-    "parentId": 0,
-    "createTime": "2020-02-02T08:54:07.000+0000",
-    "title": "订单",
-    "level": 0,
-    "sort": 0,
-    "name": "oms",
-    "icon": "order",
-    "hidden": 0
-  }
-}
+
+      {
+        "id": 49,
+        "productAttributeCategoryId": 11,
+        "name": "颜色",
+        "selectType": 0,
+        "inputType": 1,
+        "inputList": "红色,蓝色,绿色",
+        "sort": 0,
+        "filterType": 1,
+        "searchType": 0,
+        "relatedStatus": 0,
+        "handAddStatus": 0,
+        "type": 0
+      }

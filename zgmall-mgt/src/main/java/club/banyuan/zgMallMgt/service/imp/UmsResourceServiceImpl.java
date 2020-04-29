@@ -78,12 +78,10 @@ public class UmsResourceServiceImpl implements UmsResourceService {
 
     @Override
     public Integer update(@Valid UmsResource umsResource, Long resourceId) {
-        List<UmsResource> umsResources = umsResourceDao.selectAll();
-        umsResources.forEach(t->{
-            if (t.getUrl().equals(umsResource.getUrl())||t.getName().equals(umsResource.getName())){
-                throw new ReqFailException(UMS_RESOURCE_NAME_DUPLICATE);
-            }
-        });
+        UmsResource umsResource1 = umsResourceDao.selectByPrimaryKey(resourceId);
+        if (ObjectUtil.isEmpty(umsResource1)){
+            throw new ReqFailException(UMS_ADMIN_RESOURCE_NOT_EXIST);
+        }
         umsResource.setCategoryId(resourceId);
 
         return umsResourceDao.updateByPrimaryKey(umsResource);

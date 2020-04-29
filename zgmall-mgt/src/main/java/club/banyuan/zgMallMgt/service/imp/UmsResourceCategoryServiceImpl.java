@@ -10,6 +10,7 @@ import cn.hutool.core.util.ObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,6 +50,7 @@ public class UmsResourceCategoryServiceImpl implements UmsResourceCategoryServic
                 throw new ReqFailException(UMS_RESOURCE_CATEGORY_NAME_DUPLICATE);
             }
         });
+        umsResourceCategory.setCreateTime(new Date());
         return umsResourceCategoryDao.insert(umsResourceCategory);
     }
 

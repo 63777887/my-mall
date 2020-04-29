@@ -208,6 +208,15 @@ public class AdminServiceImpl implements AdminService {
         return umsAdminResp;
     }
 
+    @Override
+    public Integer updateStatus(Integer status, Long adminId) {
+        UmsAdmin umsAdmin = umsAdminDao.selectByPrimaryKey(adminId);
+        if (ObjectUtil.isEmpty(umsAdmin)) {
+            throw new ReqFailException(UMS_ADMIN_ROLE_EMPTY);
+        }
+        return umsAdminDao.updateStatusByAdminId(status,adminId);
+    }
+
     @CacheEvict(value = CacheKey.MALL_ADMIN,allEntries = true)
     public void updateMenu(){
 

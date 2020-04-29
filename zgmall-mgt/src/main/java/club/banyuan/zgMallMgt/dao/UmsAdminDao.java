@@ -30,4 +30,6 @@ public interface UmsAdminDao {
     int updateByPrimaryKey(UmsAdmin record);
 
     List<UmsAdmin> selectAll();
+
+    Integer updateStatusByAdminId(@Param("status") Integer status, @Param("adminId") Long adminId);
 }

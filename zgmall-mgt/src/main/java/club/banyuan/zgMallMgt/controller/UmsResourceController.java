@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/resource")
-public class ResourceController {
+public class UmsResourceController {
 
     @Autowired
     private UmsResourceService umsResourceService;
