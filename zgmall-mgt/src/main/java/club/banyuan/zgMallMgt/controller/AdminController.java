@@ -7,6 +7,9 @@ import club.banyuan.zgMallMgt.dto.AdminLoginReq;
 import club.banyuan.zgMallMgt.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +24,6 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
-    private static final String TOKEN_HEAD_KEY="Authorization";
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
@@ -84,7 +86,7 @@ public class AdminController {
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
 //    @ResponseBody
-    public void logout(HttpServletRequest request){
-        request.removeAttribute("TOKEN_HEAD_KEY");
+    public void logout(){
+        adminService.logout();
     }
 }

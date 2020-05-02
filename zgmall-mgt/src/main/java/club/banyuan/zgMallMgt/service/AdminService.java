@@ -30,4 +30,7 @@ public interface AdminService {
     UmsAdminResp register(UmsAdmin admin);
 
     Integer updateStatus(Integer status, Long adminId);
+
+    void logout();
+
 }

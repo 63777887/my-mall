@@ -15,7 +15,7 @@ public interface TokenService {
 
     boolean isExpire(String token);
 
-    boolean validateToken(String token, String username);
+    boolean validateToken(String token);
 
     String refreshToken(String token);
 

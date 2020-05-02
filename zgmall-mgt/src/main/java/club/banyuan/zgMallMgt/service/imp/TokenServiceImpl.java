@@ -103,15 +103,12 @@ public class TokenServiceImpl implements TokenService {
      * @return 是否有效
      */
     @Override
-    public boolean validateToken(String token, String username) {
+    public boolean validateToken(String token) {
         Claims claims = getClaimsFromToken(token);
         if (claims.getExpiration()==null
                 || claims.getExpiration().getTime()<=System.currentTimeMillis()){
             throw new IllegalArgumentException("token过期");
         }
-//        else if (username.equals(claims.getSubject())){
-//            throw new IllegalArgumentException("token用户不一致");
-//        }
         return true;
     }
 
@@ -124,14 +121,16 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public String refreshToken(String token){
         Claims claims = getClaimsFromToken(token);
-        validateToken(token,"username");
+        validateToken(token);
         return generateToken(claims);
     }
+
 
     @Override
     public Map<String,Object> parseMap(String token){
         return getClaimsFromToken(token);
     }
+
 
 
 }

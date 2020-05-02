@@ -1,9 +1,11 @@
 package club.banyuan.zgMallMgt.security;
 
 import club.banyuan.zgMallMgt.service.AdminService;
+import club.banyuan.zgMallMgt.service.TokenService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,6 +29,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private RedisTemplate<String,String> redisTemplate;
+    @Autowired
+    private TokenService tokenService;
+
 
 
     @Override
@@ -35,10 +42,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
         //首先从这里开始，获取token
-        String authHead = request.getHeader(AUTH_KEY);
+//        String authHead = request.getHeader(AUTH_KEY);
+        String authHead = redisTemplate.opsForValue().get(AUTH_KEY);
         if (authHead!=null && authHead.startsWith(SCHEMA)){
 
             String token = authHead.substring(SCHEMA.length());
+            String token1 = tokenService.refreshToken(token);
+            redisTemplate.opsForValue().set(AUTH_KEY, SCHEMA+token1);
             try {
                 //获取userDetails用户信息
                 UserDetails userDetails = adminService.getUserDetailsByToken(token);

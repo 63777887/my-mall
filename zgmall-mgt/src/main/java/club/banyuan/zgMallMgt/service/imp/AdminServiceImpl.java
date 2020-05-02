@@ -20,8 +20,10 @@ import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -56,9 +58,12 @@ public class AdminServiceImpl implements AdminService {
     private UmsMenuDao umsMenuDao;
     @Autowired
     private UmsRoleDao umsRoleDao;
+    @Autowired
+    private RedisTemplate<String,String> redisTemplate;
 
-    private static final String SCHEMA="Bearer";
+    private static final String SCHEMA = "Bearer";
     private static final String TOKEN_HEAD_KEY="Authorization";
+
 
 
     @Override
@@ -77,6 +82,7 @@ public class AdminServiceImpl implements AdminService {
 
         adminLoginResp.setToken(tokenService.generateToken(umsAdmins.get(0).getId().toString()));
         adminLoginResp.setTokenHead(SCHEMA);
+        redisTemplate.opsForValue().set(TOKEN_HEAD_KEY,SCHEMA+tokenService.generateToken(umsAdmins.get(0).getId().toString()));
         return adminLoginResp;
     }
 
@@ -215,6 +221,11 @@ public class AdminServiceImpl implements AdminService {
             throw new ReqFailException(UMS_ADMIN_ROLE_EMPTY);
         }
         return umsAdminDao.updateStatusByAdminId(status,adminId);
+    }
+
+    @Override
+    public void logout() {
+        redisTemplate.delete(TOKEN_HEAD_KEY);
     }
 
     @CacheEvict(value = CacheKey.MALL_ADMIN,allEntries = true)
