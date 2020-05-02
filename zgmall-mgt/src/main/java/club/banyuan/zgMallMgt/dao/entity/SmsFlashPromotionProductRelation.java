@@ -1,5 +1,6 @@
 package club.banyuan.zgMallMgt.dao.entity;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -13,13 +14,15 @@ public class SmsFlashPromotionProductRelation implements Serializable {
      */
     private Long id;
 
+    @NotNull
     private Long flashPromotionId;
 
     /**
      * 编号
      */
+    @NotNull
     private Long flashPromotionSessionId;
-
+    @NotNull
     private Long productId;
 
     /**

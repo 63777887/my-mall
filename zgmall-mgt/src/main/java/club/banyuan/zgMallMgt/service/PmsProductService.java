@@ -3,6 +3,7 @@ package club.banyuan.zgMallMgt.service;
 import club.banyuan.zgMallMgt.common.ResponsePage;
 import club.banyuan.zgMallMgt.dto.CreateProductReq;
 import club.banyuan.zgMallMgt.dto.PmsProductInfoResp;
+import club.banyuan.zgMallMgt.dto.PmsProductResp;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,4 +24,7 @@ public interface PmsProductService {
     Integer recommendStatus(List<Long> ids, Integer recommendStatus);
 
     Integer newStatus(List<Long> ids, Integer newStatus);
+
+    List<PmsProductResp> simpleList(String keyword);
+
 }

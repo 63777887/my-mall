@@ -2,7 +2,10 @@ package club.banyuan.zgMallMgt.dao;
 
 import club.banyuan.zgMallMgt.dao.entity.OmsOrder;
 import club.banyuan.zgMallMgt.dao.entity.OmsOrderExample;
+
+import java.util.Date;
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface OmsOrderDao {
@@ -27,4 +30,9 @@ public interface OmsOrderDao {
     int updateByPrimaryKeySelective(OmsOrder record);
 
     int updateByPrimaryKey(OmsOrder record);
+
+
+    int uodateDeliveryById(@Param("deliveryCompany") String deliveryCompany,@Param("status") Integer status, @Param("deliverySn") String deliverySn, @Param("deliveryTime") Date deliveryTime, @Param("orderId") Long orderId);
+
+    int updateNoteById(@Param("id") Long id, @Param("note") String note, @Param("status") Integer status);
 }

@@ -1,6 +1,7 @@
 package club.banyuan.zgMallMgt.service.impl;
 
 import club.banyuan.zgMallMgt.dao.PmsProductDao;
+import club.banyuan.zgMallMgt.dao.SmsHomeNewProductDao;
 import club.banyuan.zgMallMgt.dao.entity.PmsProduct;
 import club.banyuan.zgMallMgt.dto.AdminInfoResp;
 import club.banyuan.zgMallMgt.dto.AdminLoginReq;
@@ -17,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
@@ -29,7 +32,9 @@ public class UmsAdminServiceImplTest {
   @Autowired
   private TokenService tokenService;
   @Autowired
-  PmsProductDao pmsProductDao;
+  private PmsProductDao pmsProductDao;
+  @Autowired
+  private SmsHomeNewProductDao smsHomeNewProductDao;
 
 
   @Test
@@ -51,8 +56,11 @@ public class UmsAdminServiceImplTest {
 //    AdminInfoResp info = adminService.getInfo(3);
 //    Assert.assertTrue(CollUtil.isNotEmpty(info.getMenus()));
 //    Assert.assertTrue(CollUtil.isNotEmpty(info.getRoles()));
-    PmsProduct pmsProduct = pmsProductDao.selectByPrimaryKey(90L);
+//    PmsProduct pmsProduct = pmsProductDao.selectByPrimaryKey(90L);
 //    System.out.println(pmsProductDao.deleteByPrimaryKey(90L));
-    System.out.println(ObjectUtil.isEmpty(pmsProduct));
+//    System.out.println(ObjectUtil.isEmpty(pmsProduct));
+    ArrayList<Long> integers = new ArrayList<>();
+    integers.add(8L);
+    smsHomeNewProductDao.updateRecommendStatusByIds(integers, 1);
   }
 }

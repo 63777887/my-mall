@@ -1,6 +1,7 @@
 package club.banyuan.zgMallMgt.dao;
 
 import club.banyuan.zgMallMgt.dao.entity.SmsFlashPromotionProductRelation;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -22,4 +23,10 @@ public interface SmsFlashPromotionProductRelationDao {
     List<SmsFlashPromotionProductRelation> selectByProductId(Long productId);
 
     int deleteByProductIds(List<Long> ids);
+
+    List<SmsFlashPromotionProductRelation> selectByFlashPromotionIdAndFlashPromotionSessionId(@Param("flashPromotionId") Long flashPromotionId,@Param("flashPromotionSessionId") Long flashPromotionSessionId);
+
+    int deleteBySmsFlashProMotionId(Long id);
+
+    int selectCountByFlashPromotionIdAndFlashPromotionSessionId(@Param("flashPromotionId")Long flashPromotionId,@Param("id") Long id);
 }

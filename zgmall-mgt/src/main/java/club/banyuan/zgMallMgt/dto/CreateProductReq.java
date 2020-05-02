@@ -573,7 +573,7 @@ public class CreateProductReq implements Serializable {
     public SmsFlashPromotionProductRelation findSmsFlashPromotionProductRelation() {
         SmsFlashPromotionProductRelation smsFlashPromotionProductRelation = new SmsFlashPromotionProductRelation();
         smsFlashPromotionProductRelation.setFlashPromotionCount(flashPromotionCount);
-        smsFlashPromotionProductRelation.setFlashPromotionId(feightTemplateId);
+        smsFlashPromotionProductRelation.setFlashPromotionId(flashPromotionId);
         smsFlashPromotionProductRelation.setFlashPromotionPrice(flashPromotionPrice);
         smsFlashPromotionProductRelation.setSort(flashPromotionSort);
         return smsFlashPromotionProductRelation;

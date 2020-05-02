@@ -48,6 +48,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers("/login").permitAll().anyRequest().authenticated();
 
+
         // 添加自定义的jwt过滤器
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter();
         // 注入属性

@@ -6,8 +6,10 @@ import club.banyuan.zgMallMgt.dao.entity.UmsAdmin;
 import club.banyuan.zgMallMgt.dto.AdminLoginReq;
 import club.banyuan.zgMallMgt.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
@@ -18,6 +20,8 @@ public class AdminController {
 
     @Autowired
     private AdminService adminService;
+
+    private static final String TOKEN_HEAD_KEY="Authorization";
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
@@ -76,5 +80,11 @@ public class AdminController {
     @ResponseBody
     public ResponseResult register(@RequestBody UmsAdmin admin){
         return ResponseResult.success(adminService.register(admin));
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+//    @ResponseBody
+    public void logout(HttpServletRequest request){
+        request.removeAttribute("TOKEN_HEAD_KEY");
     }
 }

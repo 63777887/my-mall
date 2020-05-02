@@ -14,7 +14,15 @@ public class CmsSubjectController {
 
     @ResponseBody
     @RequestMapping(value = "/listAll",method = RequestMethod.GET)
-    public ResponseResult list(){
+    public ResponseResult listAll(){
         return ResponseResult.success(cmsSubjectService.listAll());
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/list",method = RequestMethod.GET)
+    public ResponseResult list(@RequestParam("pageNum") Integer pageNum,
+                               @RequestParam("pageSize") Integer pageSize,
+                               @RequestParam(value = "keyword",required = false) String keyword){
+        return ResponseResult.success(cmsSubjectService.list(pageNum,pageSize,keyword));
     }
 }

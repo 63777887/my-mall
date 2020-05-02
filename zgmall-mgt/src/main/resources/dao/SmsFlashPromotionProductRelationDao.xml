@@ -27,6 +27,18 @@
       from sms_flash_promotion_product_relation
       where product_id = #{productId,jdbcType=BIGINT}
     </select>
+    <select id="selectByFlashPromotionIdAndFlashPromotionSessionId" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from sms_flash_promotion_product_relation
+      where flash_promotion_id = #{flashPromotionId,jdbcType=BIGINT} and
+      flash_promotion_session_id =#{flashPromotionSessionId,jdbcType=BIGINT}
+    </select>
+    <select id="selectCountByFlashPromotionIdAndFlashPromotionSessionId" resultType="java.lang.Integer">
+      select count(*) from sms_flash_promotion_product_relation
+      where flash_promotion_id = #{flashPromotionId,jdbcType=BIGINT} and
+      flash_promotion_session_id =#{id,jdbcType=BIGINT}
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from sms_flash_promotion_product_relation
     where id = #{id,jdbcType=BIGINT}
@@ -40,6 +52,10 @@
     where product_id in <foreach collection="list" item="item" open="(" close=")" separator=",">
     #{item,jdbcType=BIGINT}
   </foreach>
+  </delete>
+  <delete id="deleteBySmsFlashProMotionId">
+    delete from sms_flash_promotion_product_relation
+    where flash_promotion_id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="club.banyuan.zgMallMgt.dao.entity.SmsFlashPromotionProductRelation" useGeneratedKeys="true">
     insert into sms_flash_promotion_product_relation (flash_promotion_id, flash_promotion_session_id, 

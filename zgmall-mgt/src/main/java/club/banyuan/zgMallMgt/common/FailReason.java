@@ -25,7 +25,20 @@ public enum  FailReason {
     PMS_PRODUCT_ATTRIBUTE_NOT_EXIST("商品属性分类不存在"),
     PMS_BRAND_EMPTY("品牌为空"),
     PMS_BRAND_NOT_EXIST("品牌不存在"),
-    PMS_BRAND_DUPLICATE("品牌名冲突");
+    PMS_BRAND_DUPLICATE("品牌名冲突"),
+    OMS_ORDER_NOT_EXIST("订单不存在"),
+    OMS_ORDER_SETTING_NOT_EXIST("订单设置不存在"),
+    OMS_ORDER_RETURN_APPLY_NOT_EXIST("退货申请不存在"),
+    OMS_ORDER_RETURN_REASON_NOT_EXIST("退货申请不存在"),
+    SMS_HOME_ADVERTISE_NOT_EXIST("广告不存在"),
+    SMS_HOME_RECOMMEND_SUBJECT_NOT_EXIST("专题不存在"),
+    SMS_HOME_RECOMMEND_PRODUCTT_NOT_EXIST("推荐商品不存在"),
+    SMS_HOME_NEW_PRODUCT_NOT_EXIST("新鲜好物不存在"),
+    SMS_HOME_BRAND_NOT_EXIST("新鲜好物不存在"),
+    SMS_COUPON_NOT_EXIST("优惠券不存在"),
+    SMS_FLASH_PROMOTION_SESSION_NOT_EXIST("限时购场次不存在"),
+    SMS_FLASH_PROMOTION_PRODUCT_RELATION_NOT_EXIST("商品限时购与商品关系表不存在"),
+    SMS_FLASH_PROMOTION_NOT_EXIST("限时购不存在");
 
     private final String message;
 

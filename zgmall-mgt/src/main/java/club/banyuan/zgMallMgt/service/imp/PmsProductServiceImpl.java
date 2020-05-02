@@ -10,7 +10,6 @@ import club.banyuan.zgMallMgt.dto.PmsProductResp;
 import club.banyuan.zgMallMgt.service.OssFileService;
 import club.banyuan.zgMallMgt.service.PmsProductService;
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
@@ -362,6 +361,21 @@ public class PmsProductServiceImpl implements PmsProductService {
     @Override
     public Integer newStatus(List<Long> ids, Integer newStatus) {
         return pmsProductDao.updateNewStatusByIds(ids, newStatus);
+    }
+
+    @Override
+    public List<PmsProductResp> simpleList(String keyword) {
+        PmsProductExample pmsProductExample = new PmsProductExample();
+        PmsProductExample.Criteria criteria = pmsProductExample.createCriteria();
+        if (StrUtil.isNotBlank(keyword)){
+            criteria.andNameLike(StrUtil.concat(true, "%",keyword,"%"));
+        }
+        List<PmsProduct> pmsProducts = pmsProductDao.selectByExample(pmsProductExample);
+        return pmsProducts.stream().map(t->{
+            PmsProductResp pmsProductResp = new PmsProductResp();
+            BeanUtil.copyProperties(t, pmsProductResp);
+            return pmsProductResp;
+        }).collect(Collectors.toList());
     }
 
 }

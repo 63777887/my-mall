@@ -58,24 +58,30 @@ public class PmsProductController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "update/publishStatus", method = RequestMethod.POST)
+    @RequestMapping(value = "/update/publishStatus", method = RequestMethod.POST)
     public ResponseResult publishStatus(@RequestParam("ids") List<Long> ids,
                                         @RequestParam("publishStatus") Integer publishStatus) {
         return ResponseResult.success(pmsProductService.publishStatus(ids, publishStatus));
     }
 
     @ResponseBody
-    @RequestMapping(value = "update/recommendStatus", method = RequestMethod.POST)
+    @RequestMapping(value = "/update/recommendStatus", method = RequestMethod.POST)
     public ResponseResult recommendStatus(@RequestParam("ids") List<Long> ids,
                                           @RequestParam("recommendStatus") Integer recommendStatus) {
         return ResponseResult.success(pmsProductService.recommendStatus(ids, recommendStatus));
     }
 
     @ResponseBody
-    @RequestMapping(value = "update/newStatus", method = RequestMethod.POST)
+    @RequestMapping(value = "/update/newStatus", method = RequestMethod.POST)
     public ResponseResult newStatus(@RequestParam("ids") List<Long> ids,
                                     @RequestParam("newStatus") Integer newStatus) {
         return ResponseResult.success(pmsProductService.newStatus(ids, newStatus));
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/simpleList", method = RequestMethod.GET)
+    public ResponseResult simpleList(@RequestParam(value = "keyword",required = false) String keyword) {
+        return ResponseResult.success(pmsProductService.simpleList(keyword));
     }
 
 

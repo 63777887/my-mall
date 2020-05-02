@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="club.banyuan.zgMallMgt.dao.OmsOrderOperateHistoryDao">
+  <resultMap id="BaseResultMap" type="club.banyuan.zgMallMgt.dao.entity.OmsOrderOperateHistory">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="order_id" jdbcType="BIGINT" property="orderId" />
+    <result column="operate_man" jdbcType="VARCHAR" property="operateMan" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="order_status" jdbcType="INTEGER" property="orderStatus" />
+    <result column="note" jdbcType="VARCHAR" property="note" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, order_id, operate_man, create_time, order_status, note
+  </sql>
+  <sql id="Base_Column_Alisa_List">
+    oooh.id, oooh.order_id, oooh.operate_man, oooh.create_time, oooh.order_status, oooh.note
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from oms_order_operate_history
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+    <select id="selectByOrderId" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_Alisa_List" />
+      from oms_order_operate_history oooh
+      inner join oms_order oo on oooh.order_id=oo.id
+      where oo.id=#{orderId}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from oms_order_operate_history
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByOrderIds">
+    delete from oms_order_operate_history
+    where id in <foreach collection="list" item="item" open="(" close=")" separator=",">
+    #{item,jdbcType=BIGINT}
+  </foreach>
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="club.banyuan.zgMallMgt.dao.entity.OmsOrderOperateHistory" useGeneratedKeys="true">
+    insert into oms_order_operate_history (order_id, operate_man, create_time, 
+      order_status, note)
+    values (#{orderId,jdbcType=BIGINT}, #{operateMan,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{orderStatus,jdbcType=INTEGER}, #{note,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="club.banyuan.zgMallMgt.dao.entity.OmsOrderOperateHistory" useGeneratedKeys="true">
+    insert into oms_order_operate_history
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="operateMan != null">
+        operate_man,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="orderStatus != null">
+        order_status,
+      </if>
+      <if test="note != null">
+        note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="operateMan != null">
+        #{operateMan,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderStatus != null">
+        #{orderStatus,jdbcType=INTEGER},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+    <insert id="insertByOrderId">
+      insert into oms_order_operate_history (order_id, operate_man, create_time,
+      order_status, note)
+    values (#{orderId,jdbcType=BIGINT}, #{nickName,jdbcType=VARCHAR}, #{date,jdbcType=TIMESTAMP},
+      #{status,jdbcType=INTEGER}, #{note,jdbcType=VARCHAR})
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="club.banyuan.zgMallMgt.dao.entity.OmsOrderOperateHistory">
+    update oms_order_operate_history
+    <set>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="operateMan != null">
+        operate_man = #{operateMan,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderStatus != null">
+        order_status = #{orderStatus,jdbcType=INTEGER},
+      </if>
+      <if test="note != null">
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="club.banyuan.zgMallMgt.dao.entity.OmsOrderOperateHistory">
+    update oms_order_operate_history
+    set order_id = #{orderId,jdbcType=BIGINT},
+      operate_man = #{operateMan,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      order_status = #{orderStatus,jdbcType=INTEGER},
+      note = #{note,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
