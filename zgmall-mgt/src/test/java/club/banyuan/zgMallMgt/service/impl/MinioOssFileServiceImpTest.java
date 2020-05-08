@@ -73,7 +73,7 @@ public class MinioOssFileServiceImpTest {
 
     @Test
     public void downloadTest() throws IOException {
-        Files.copy(ossFileService.download("20200414/test.jpg"), Paths.get(MinioUtil.SAVE_IMG_TO_LOACL, "down"));
+//        Files.copy(ossFileService.download("20200414/test.jpg"), Paths.get(MinioUtil.SAVE_IMG_TO_LOACL, "down"));
 
 //        Assert.assertFalse(ossFileService.isExist(OBJECT_NAME));
 

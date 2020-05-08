@@ -86,7 +86,8 @@ public class AdminController {
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
 //    @ResponseBody
-    public void logout(){
+    public ResponseResult logout(){
         adminService.logout();
+        return ResponseResult.success();
     }
 }

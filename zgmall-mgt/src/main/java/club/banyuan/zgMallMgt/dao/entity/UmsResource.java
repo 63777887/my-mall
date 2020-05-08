@@ -1,9 +1,6 @@
 package club.banyuan.zgMallMgt.dao.entity;
 
-import com.sun.istack.internal.NotNull;
-
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Date;
 
